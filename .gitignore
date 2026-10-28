@@ -1,0 +1,4 @@
+# Eval cases and results come from private repositories
+evals/cases/*
+!evals/cases/TEMPLATE.md
+evals/results/
