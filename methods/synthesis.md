@@ -53,15 +53,21 @@ not take a slot or cost a verification.
      what got worse;
    - matches an **open** entry → it goes under **Still open**, not New;
    - matches a **fixed** entry → it goes under **Came back**;
-   - matches a decision in `decisions.md` → drop it.
+   - matches a **duplicate** entry → treat it as the entry it duplicates;
+   - matches a branch decision, listed under the ledger's table → drop it.
 
    Never filter out an always-blocker (`methods/reviewing.md`) — data loss, a
    bypassed trust boundary, uncapped spend — unless the decision names that
    exact finding. A broad decision ("raw SQL is fine in migrations") does not
    cover a narrow, dangerous case it never mentioned.
 
-   Then check every **open** ledger entry against the head SHA. Still there:
-   **Still open**. Gone: it becomes **fixed**.
+   Then check every **open** ledger entry, and every entry whose notes show
+   two rounds disagreeing, against the head SHA. Still there: **Still open**.
+   Gone: it becomes **fixed**.
+
+   Two rounds that ran at the same time may each have added the same finding
+   under its own id. When two entries have the same root cause, keep the one
+   added first and mark the other `duplicate of` it.
 
 4. **Surface conflicts.** When roles recommend incompatible fixes, put both
    under **Needs a decision**, side by side, each with its reason. Do not
@@ -126,7 +132,7 @@ base <short SHA> · head <short SHA> · reviewers: security, correctness, archit
 <findings in full, with their existing ledger id>
 
 ## Still open
-- L-004 · should-fix · <title> · <file:line>
+- L-01.4 · should-fix · <title> · <file:line>
 
 ## Dropped
 <n> by the cap, <n> by earlier decisions. Dropped by verification, one line
@@ -143,17 +149,25 @@ each:
 
 ## Ledger changes
 
-After the result, a separate block the orchestrator applies:
+After the result, a separate block the orchestrator saves, as it is, in the
+round's `changes.md`:
 
 ```markdown
 ## Ledger changes
-- add L-007 · open · should-fix · <title> · <file:line>
-- L-004 · checked → <NN>
-- L-002 · fixed → open (came back)
-- L-005 · open → fixed
+- add L-03.1 · open · should-fix · <title> · <file:line>
+- L-01.4 · checked → 03
+- L-01.2 · fixed → open (came back)
+- L-02.1 · open → fixed
+- L-02.3 · duplicate of L-01.5
 ```
 
-New ids continue from the highest in the ledger.
+A new id is `L-<this round>.<n>`, with `n` counting from 1 in the order the
+findings appear under New. It needs nothing from the ledger, so a round
+running alongside this one can never hand out the same id.
+
+Never change a status the decider set
+(`rejected`, `deferred`): a finding that has got worse is New, with its own
+id.
 
 ## Role counts
 

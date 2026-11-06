@@ -24,3 +24,7 @@ if they asked to see the choice first, show it and wait (`--ask`).
 4. **Enforcement**, for `round.md` and the report: `instruction-only:
    reviewers and synthesis are told not to write, but Codex cannot give
    them a separate read-only sandbox (Codex adapter)`.
+5. **File headers** (`tasks/review.md`): your own model is the one your
+   session runs on, and your effort its reasoning effort, else `unknown`. An
+   agent's are the model and effort you spawned it on, or yours where you
+   left them unset.

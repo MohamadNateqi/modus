@@ -17,7 +17,8 @@ brief ──> ├─ reviewer (role B) ─┼──> synthesis ──> result
 
 The orchestrator, the session that started the task, prepares the briefs,
 starts the agents, and writes every file. Neither step writes anything
-(contract rule 4).
+(contract rule 4). Each file it saves for an agent starts with the header
+naming that agent's model and effort (`tasks/review.md`).
 
 ## The reviewer brief
 
@@ -42,8 +43,9 @@ synthesis's job.
 - every reviewer's review, labelled by role and the model it ran on;
 - the roles left out, each with its reason: skipped by triage, or left out
   by the person when triage would have run them;
-- the ledger and decisions, or a note that this is the first round or that
-  they could not be trusted;
+- the ledger, rebuilt from its sources with the branch decisions under it
+  (`tasks/review.md`), or a note that this is the first round or that it
+  could not be trusted;
 - the base and head SHAs, and the round number;
 - the same line: *return, do not write.*
 

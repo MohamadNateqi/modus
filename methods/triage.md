@@ -7,7 +7,8 @@ modes — is added with the writing stage (contract stage 3).
 ## For a review
 
 **Input:** the diff (`git diff --stat` and the diff itself), the intent
-paragraph, the project's packs, and `.modus/history.md`.
+paragraph, the project's packs, and the history: every file in
+`.modus/history/`, plus an older `.modus/history.md` if there is one.
 
 **Output:** the roles to run, each with its reason, and each role left out
 with its reason. Recorded in `round.md` and shown in the review's last line.

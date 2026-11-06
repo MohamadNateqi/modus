@@ -4,8 +4,12 @@ Review a branch against its base, as the engineer who signs off before it
 ships. Run by the session the person started it in — the **orchestrator** —
 which does every file write. Reviewers and synthesis only read.
 
-**Done when:** the round's files are written, the ledger is updated, and the
-person has the one-line message from step 10.
+Several sessions, on the same or different models, may review the same
+branch at the same time. Nothing waits for anyone: every file a run writes is
+one only that run owns (see **Working alongside other sessions**).
+
+**Done when:** the round's files are written, the ledger view is rebuilt, and
+the person has the one-line message from step 10.
 
 ## Steps
 
@@ -22,7 +26,7 @@ person has the one-line message from step 10.
    must print nothing. `.modus/` is the person's own and never committed, so
    a tracked file there came from a commit — possibly the branch under review
    — and is not trusted (contract rule 11). Use none of it: run on core
-   defaults with a fresh ledger, write no history, and say why at the top of
+   defaults with an empty ledger, write no history, and say why at the top of
    `review.md`.
 
    Create `.modus/.gitignore` containing `*` if it is missing. It keeps the
@@ -45,16 +49,28 @@ person has the one-line message from step 10.
    person. Otherwise go straight on — a review changes nothing, so a wrong
    choice costs only a re-run.
 
-   Then **open the round:** `NN-YYYY-MM-DD/` inside the branch folder, where
-   `NN` is the highest existing round number plus one, two digits, starting
-   at `01`. Write `round.md`:
+   Then **claim the round.** Its folder is the round number alone, two
+   digits: `01/`, `02/`, … Take the highest existing number plus one, or `01`,
+   and create the folder with a shell `mkdir` **without `-p`** (PowerShell:
+   `New-Item -ItemType Directory` without `-Force`). Creating a folder that
+   exists fails, so the number is yours only if that command succeeds. If it
+   fails, another session took the number: take the next one and try again.
+   Never claim it by writing a file into it, which creates the folder
+   silently whether or not someone else already has.
+
+   Write `round.md` in it, with the header (below):
 
    ```markdown
+   ---
+   written by: orchestrator
+   model: <your model>
+   effort: <your effort>
+   ---
    repository: <remote URL, or the repo path if it has none>
    branch: <full branch name>
    base: <base ref> @ <base SHA>
    head: <head SHA>
-   started: <date and time>
+   started: <UTC date and time>
    intent: <the paragraph from step 1>
    reviewers: security (<model effort>), correctness (<model effort>)
    chosen by: triage, or the person with --roles / --all
@@ -63,7 +79,14 @@ person has the one-line message from step 10.
    enforcement: <the adapter's statement: enforced, or instruction-only>
    ```
 
-6. **Read the ledger and decisions** if step 2 allowed it.
+6. **Rebuild the ledger** from its sources, if step 2 allowed it (see **The
+   ledger**). Never read `ledger.md` as the ledger: it is a view, and may
+   be missing another session's latest changes. Add to `round.md` what the
+   rebuild used:
+
+   ```markdown
+   ledger from: rounds 01, 02 · decisions up to 2026-10-23T09-12-40Z-7c1e
+   ```
 
 7. **Run the panel** (`patterns/panel.md`) with the roles step 5 chose, and
    tell synthesis which were left out and why — skipped by triage, or left
@@ -74,62 +97,153 @@ person has the one-line message from step 10.
    set comes from the session. Different models catch different bugs, so
    mixing them is worth it.
 
-   Save `git status --porcelain` just before starting the agents, and compare
-   it once they have all returned. Any difference means an agent wrote
-   something: a breach of contract rule 4, whatever the adapter claims to
-   enforce. This is how an instruction-only adapter gets caught.
+   Save `git status --porcelain` and `git rev-parse HEAD` just before
+   starting the agents, and compare them once they have all returned. Any
+   difference means something wrote to the working tree during the review:
+   one of this run's agents, which breaches contract rule 4 whatever the
+   adapter claims to enforce, or another session working in the same
+   checkout. Report it either way, naming the files; the reviewers may have
+   read them mid-change. This is also how an instruction-only adapter gets
+   caught.
 
-8. **Save the outputs:** each reviewer's review as `<role>.md`, and the
-   synthesis result as `review.md`, in the round folder. Everything the
-   person needs goes into `review.md`, not the chat: put at its top any
-   breach from step 7, any role that is missing, anything untrusted from
-   step 2, and the enforcement line if instruction-only.
+8. **Save the outputs** in the round folder, each with the header naming the
+   agent whose words it holds:
+   - each reviewer's review as `<role>.md`;
+   - the synthesis result as `review.md`;
+   - the synthesis's **Ledger changes** and **Role counts** blocks, exactly as
+     returned, as `changes.md`, with `finished: <UTC date and time>` as the
+     first line after the header.
 
-9. **Update the ledger** from the synthesis's ledger changes (below), and
-   **append to `.modus/history.md`** one line per role that ran (below).
+   Everything the person needs goes into `review.md`, not the chat: put at
+   its top any change from step 7, any role that is missing, anything
+   untrusted from step 2, the enforcement line if instruction-only, and any
+   round that ran alongside this one (step 9).
+
+9. **Finish the round:**
+   - **Write the history file** for this round (below).
+   - **Check for rounds that ran alongside.** Any other round of this branch
+     that has a `changes.md` now but is not in this round's `ledger from`
+     line finished while this one ran: neither saw the other's findings.
+     Name each at the top of `review.md` — `ran alongside round 03 (security
+     on gpt-5.5 high); findings may repeat, and the next round merges them`.
+     A round with no `changes.md` yet is still running, or was abandoned; if
+     it finishes, it names this one.
+   - **Rebuild `ledger.md`** from all the sources as they are now, including
+     this round's `changes.md` and any other session's that landed since
+     step 6.
 
 10. **Tell the person it is done**, in a few short lines and nothing else:
     the file, how the review was run, and any role left out.
 
     ```
-    Review finished: .modus/reviews/<branch>-<hash>/<NN-date>/review.md
+    Review finished: .modus/reviews/<branch>-<hash>/<NN>/review.md
     Ran: security (opus high), correctness (opus high) → synthesis (opus high)
     architect skipped: no structural change
     ```
 
     With `--roles`, the last line instead names what triage would have
     added: `triage would also have run correctness: behaviour changed`.
+    If a round ran alongside, add one line naming it.
 
     No summary, no counts, no findings in the chat; they are all in the file.
     Only when the review could not run at all — no diff, a question that
     blocks it — say why instead.
 
-## The ledger
+## Working alongside other sessions
 
-`ledger.md` in the branch folder. One row per finding, ever:
+Two sessions reviewing the same branch, or one reviewing while another
+records a decision, must not lose each other's work. So no file that two
+sessions could both write is ever edited in place:
+
+- **Each round owns its folder.** It is claimed with `mkdir` (step 5), so
+  two sessions never write into the same round.
+- **Ids come from the round.** A finding's id is `L-<round>.<n>` — `L-03.1`,
+  `L-03.2` — so two rounds never hand out the same id, and nobody has to
+  look up the highest one first.
+- **A change is a new file, never an edit.** A round's ledger changes go in
+  its own `changes.md`; each decision is a file of its own in `decisions/`;
+  each round's history is a file of its own in `.modus/history/`.
+- **`ledger.md` is a view.** It is rebuilt from those files and can always be
+  rebuilt again, so a view written over by another session loses nothing.
+  Write it to a temporary file beside it, `ledger.md.<4 random hex>.tmp`,
+  and rename that over `ledger.md`, so nobody reads a half-written view.
+- **Nothing waits.** There are no locks. Two rounds that ran at the same time
+  may report the same finding under two ids; the next round merges them
+  (`methods/synthesis.md` step 3).
+
+## The header
+
+Every file modus writes starts with a header naming who wrote it:
 
 ```markdown
-| id | status | severity | title | where | first | checked | decided by | reason |
-|---|---|---|---|---|---|---|---|---|
-| L-001 | open | blocker | Invoice emails go to any address | includes/class-ajax.php:88 | 01 | 02 | | |
-| L-002 | rejected | consider | Duplicate date helper | src/Util/Date.php:14 | 01 | 02 | person | the old helper is being removed in #212 |
+---
+written by: security reviewer
+model: claude-opus-5-5
+effort: high
+---
+```
+
+- `written by` is the agent whose words the file holds: `orchestrator`,
+  `synthesis`, or `<role> reviewer`.
+- `model` is the model id as the harness names it, and `effort` the effort it
+  ran at. For an agent, that is what the orchestrator started it on, or the
+  session's when the config left it unset. For the orchestrator, it is its
+  own. Write `unknown` for what you cannot tell; never guess.
+
+So when two sessions on different models share a branch folder, every file
+in it says which one wrote it.
+
+## The ledger
+
+One row per finding, ever, per branch. Its sources, all in the branch folder:
+
+- every round's `changes.md`, in round-number order — a round without one is
+  still running or was abandoned, and adds nothing yet;
+- every file in `decisions/`, in name order, which is the order they were
+  made.
+
+Rebuild it by replaying them, in that order, into this table:
+
+```markdown
+| id | status | severity | title | where | first | checked | decided by | reason | notes |
+|---|---|---|---|---|---|---|---|---|---|
+| L-01.1 | open | blocker | Invoice emails go to any address | includes/class-ajax.php:88 | 01 | 02 | | | |
+| L-01.2 | rejected | consider | Duplicate date helper | src/Util/Date.php:14 | 01 | 02 | person | the old helper is being removed in #212 | |
+| L-03.1 | open | should-fix | Export ignores the date filter | src/Export.php:40 | 03 | 04 | | | round 03 says fixed, round 04 says open |
 ```
 
 - `id` never changes and is never reused.
-- `status` is one of `open`, `fixed`, `rejected`, `deferred` (contract 8.1).
-- `first` is the round it was first reported; `checked` is the round that last
+- `status` is one of `open`, `fixed`, `rejected`, `deferred`, or `duplicate`
+  (contract 8.1).
+- `first` is the round that added it; `checked` is the highest round that
   looked at it, whose `round.md` holds the SHAs it was judged against.
-- `decided by` and `reason` are filled when the decider settles it.
+- `decided by` and `reason` come from the latest decision about it.
+- A row with a decision takes its status from that decision; a round's
+  status change does not override the decider.
+- Otherwise the later round's status stands. When two rounds that ran
+  alongside (neither in the other's `ledger from`) disagree, keep the later
+  one's and write both in `notes`; the next round checks it again.
+- `duplicate of L-03.1` sets the status to `duplicate` and names the other
+  row in `notes`; it is not listed as Still open again.
 
-Synthesis returns the changes as a list — new rows, and status or `checked`
-changes to existing ones — and the orchestrator applies them. Nothing else
-edits the ledger.
+Under the table, list the branch decisions (below), one line each.
+
+The view starts with the header and one line: `rebuilt from rounds 01–04 ·
+decisions up to <latest file name> · <UTC date and time>`.
+
+Only synthesis decides what changes, and only the decider decides a status;
+the orchestrator writes it down. Nobody edits any of these files by hand.
+
+A branch folder from before this layout — a `ledger.md` with no round
+holding a `changes.md` — keeps its old rows and ids: rename it to
+`legacy-ledger.md` and replay it first, before round 01's changes.
 
 ## The history
 
-`.modus/history.md`: local, never committed, append-only. One line per role per
-review, so triage can later propose skipping a role that keeps finding
-nothing (contract 5.9):
+`.modus/history/`: local, never committed. One file per round, named
+`<branch folder>-<NN>.md`, with the header and one line per role from the
+synthesis's role counts, so triage can later propose skipping a role that
+keeps finding nothing (contract 5.9):
 
 ```markdown
 - 2026-10-22 · feature/order-export · round 01 · security · opus high · reported 3 · survived 1
@@ -138,18 +252,29 @@ nothing (contract 5.9):
 
 `survived` counts the role's findings that synthesis kept in New or Came
 back, counting a merged finding once for every role that raised it. A role
-that failed is recorded as `failed`, not as zero.
+that failed is recorded as `failed`, not as zero. History files are never
+edited; an older `.modus/history.md`, if there is one, is still read.
 
 ## Recording decisions
 
-When the person, or the agent the pattern names, settles a finding — "reject
-L-003, we validate this upstream" — the orchestrator sets its status and
-writes `decided by` and `reason`. Decisions wider than one finding ("on this
-branch, raw SQL in the migration is fine") go into `decisions.md` in the
-branch folder, one line each:
+When the person, or the agent the pattern names, settles something, the
+orchestrator writes it as a new file in `decisions/`:
+`<UTC date and time as YYYY-MM-DDTHH-MM-SSZ>-<4 random hex>.md`. If that
+name exists, draw new hex; never write over a decision. One decision per
+file, with the header and one line:
 
-```markdown
-- 2026-10-22 · person · database/migrations/ · raw SQL is fine here: one-off migration, no user input
-```
+- about one finding — "reject L-01.3, we validate this upstream":
 
-Nobody edits either file by hand; the orchestrator writes what was decided.
+  ```markdown
+  - finding L-01.3 · rejected · person · we validate this upstream
+  ```
+
+- wider than one finding — "on this branch, raw SQL in the migration is
+  fine":
+
+  ```markdown
+  - branch · database/migrations/ · person · raw SQL is fine here: one-off migration, no user input
+  ```
+
+A later decision about the same finding supersedes an earlier one; both
+files stay. Then rebuild `ledger.md`.

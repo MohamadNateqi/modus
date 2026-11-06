@@ -378,8 +378,10 @@ needed when the task adds behaviour, or changes behaviour that no test pins.
 **Start small.** The default is the solo pattern. Every addition points at a
 signal.
 
-**Skip roles that keep finding nothing.** Each review appends one line per
-role to `.modus/history.md`: how many of its findings survived synthesis.
+**Skip roles that keep finding nothing.** Each review writes a file to
+`.modus/history/` with one line per role: how many of its findings survived
+synthesis. One file per round, never edited, so reviews running at the same
+time never write over each other's counts.
 Like everything under `.modus/`, it is never committed. A
 role with no surviving finding in its last ten or more reviews on this project
 is proposed for skipping, with that count as the reason. Two limits:
@@ -523,7 +525,8 @@ A project may set a model and an effort per role, and for synthesis, in
 raised independently is stronger evidence than agreement on one model. What
 an adapter can offer is limited by its harness: Claude Code chooses among
 Claude models only, Codex among its own. The model each reviewer ran on is
-recorded in `round.md`, with its effort.
+recorded in `round.md`, with its effort, and at the top of each file holding
+its words (section 8.1).
 
 ## 8. Learning
 
@@ -543,18 +546,41 @@ know what the earlier rounds found and what the decider decided.
     <branch>-<hash>/       branch name with / replaced by -, plus a short
                            hash of the full name, so feature/auth and
                            feature-auth never share a folder
-      ledger.md
-      decisions.md         settled questions for this branch (section 8.2)
-      01-2026-10-22/       round number, then the date the round started
+      ledger.md            a view, rebuilt from the rounds and decisions
+      decisions/           one file per decision (section 8.2)
+      01/                  the round number; its date is in round.md
         round.md           repository, base SHA, head SHA, intent, reviewers
         security.md
         correctness.md
         review.md          the synthesised result
-      02-2026-10-24/
+        changes.md         this round's ledger changes
+      02/
   ```
 
   Round numbers increase and are never reused, so two rounds on one day stay
   apart.
+- **Sessions work alongside each other.** Two sessions, on the same model or
+  different ones, may review one branch at once, and a decision may be
+  recorded while a review runs. Nothing locks and nothing waits, and nothing
+  is lost, because no file two sessions could both write is ever edited in
+  place:
+  - a round claims its number by creating its folder, which fails if
+    another session already did; the loser takes the next number;
+  - a finding's id is the round plus a count, `L-03.1`, so two rounds never
+    hand out the same id;
+  - every change is a new file: a round's `changes.md`, one file per
+    decision, one history file per round;
+  - `ledger.md` is only a view, rebuilt from those files before every use,
+    so overwriting it loses nothing.
+
+  Two rounds that ran at the same time may report one finding under two
+  ids. Each round records which earlier rounds it read; one that finished
+  while it ran is named in its result, and the next round merges the
+  duplicates.
+- **Every file says who wrote it.** Each file modus writes starts with a
+  header naming the agent whose words it holds, its model and its effort,
+  `unknown` for what it cannot tell. In a folder two models share, every
+  finding can be traced to the one that made it.
 - **Each round records the code it saw.** `round.md` holds the repository and
   the base and head SHAs, and every ledger entry points at the round that
   last checked it. "Fixed" and "came back" are judged against those SHAs, so
@@ -577,6 +603,11 @@ know what the earlier rounds found and what the decider decided.
   | **fixed** | checked that it really is fixed; reported again only if reintroduced |
   | **rejected** | not raised again unless the code gets worse; the reason is recorded |
   | **deferred** | not raised again on this branch; noted in the result |
+  | **duplicate** | the same finding as another entry, reported by a round that ran alongside; follows that entry |
+
+  The decider's status stands over any round's. When two rounds that ran
+  alongside disagree on a status, the later one's stands, both are noted,
+  and the next round checks it again.
 
 - **The decider decides; the agent records.** "Reject, because X" comes from
   the decider: a person by default, or the agent the pattern names (rule 9).
@@ -596,10 +627,13 @@ know what the earlier rounds found and what the decider decided.
 
 ### 8.2 Branch decisions
 
-- **A decisions file, per branch**, at `decisions.md` in the branch's folder
-  (section 8.1). One line per settled question that goes beyond a single
-  finding, such as "on this branch we allow X here because Y". Every round
-  reads it, and synthesis filters against it (section 6.6).
+- **Decisions, per branch**, in `decisions/` in the branch's folder (section
+  8.1): one file per decision, named by the time it was made, never edited.
+  A decision settles one finding, or a question that goes beyond one, such
+  as "on this branch we allow X here because Y". A later decision on the
+  same question supersedes the earlier one; both files stay. Every round
+  reads them through the ledger, and synthesis filters against them
+  (section 6.6).
 - **Nobody edits it by hand.** The agent writes an entry when the decider
   settles something: where it applies (a path or area), the reason, and who
   decided.
@@ -631,12 +665,14 @@ sorts them by where they apply, and shows them at the end of the run in a
 short **Lessons** section, separate from the findings. A few at most, as with
 the findings cap.
 
-**Keeping.** Lessons not yet decided go into the project's lessons file,
-`.modus/lessons.md`, so they outlive the run, a subagent's lessons included.
-Like everything under `.modus/` (section 8.1), it is never committed, and
-not trusted if git tracks it. An approved lesson becomes a convention in
-`.modus/conventions/`, or a change to modus itself. A lesson that recurs is grouped with its earlier entries and
-counted there; that count is what rule 2 below checks.
+**Keeping.** Lessons not yet decided go into the project's lessons folder,
+`.modus/lessons/`, so they outlive the run, a subagent's lessons included:
+one file per run, never edited, so runs at the same time never write over
+each other (section 8.1). Like everything under `.modus/`, it is never
+committed, and not trusted if git tracks it. An approved lesson becomes a
+convention in `.modus/conventions/`, or a change to modus itself. A lesson
+that recurs is grouped with its earlier entries and counted when the folder
+is read; that count is what rule 2 below checks.
 
 **Confidence.** Each lesson in the file carries a level:
 
@@ -719,9 +755,9 @@ The folder keeps itself out of git (section 8.1).
   conventions/      the person's conventions for this project
   reviews/          one folder per branch, with its ledger and decisions
                     (sections 8.1, 8.2)
-  lessons.md        lessons not yet decided, with their level (8.3)
-  history.md        one line per role per review, for skipping roles that
-                    keep finding nothing (5.9)
+  lessons/          lessons not yet decided, one file per run (8.3)
+  history/          one file per review round, one line per role, for
+                    skipping roles that keep finding nothing (5.9)
   architecture.md   a generated map of main, used when the project has no
                     ARCHITECTURE.md (the map task, 5.6)
 ```
@@ -789,7 +825,7 @@ Each stage is usable on its own and is evaluated before the next starts.
 
 1. **Review, end to end.** The review task. Roles: security, correctness,
    architect. Synthesis step. Panel pattern. Branch ledger for
-   multi-round review. Models per role, and `history.md` written from the
+   multi-round review. Models per role, and the history written from the
    first review. Review triage: which roles run on a change, including
    skipping roles that keep finding nothing. The map task. Claude Code and
    Codex adapters. A first calibration corpus: about ten bug cases and a few

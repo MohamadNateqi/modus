@@ -27,3 +27,7 @@ role, and `--ask` to show triage's choice before it runs.
    config does not give.
 4. **Enforcement**, for `round.md`: `enforced: reviewers and synthesis have
    no edit tools and a read-only shell (Claude Code adapter)`.
+5. **File headers** (`tasks/review.md`): your own model is the model id your
+   session states, and your effort the one it states, else `unknown`. An
+   agent's are the `model` and `effort` you set on it, or yours where you
+   left them unset.
