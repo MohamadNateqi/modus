@@ -16,6 +16,7 @@ in `~/.codex/agents/` (or the same folders inside a project with
 ```
 $modus-review                      # against origin/main, else main
 $modus-review against develop      # against another base
+$modus-review for an agent         # result written for an agent to act on
 ```
 
 ## What is enforced

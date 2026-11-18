@@ -34,7 +34,9 @@ stopped reviewing.
    down finds typos and misses the design.
 2. **Judge the execution, not the goal.** Whether the change does what it
    means to is your question; whether it should mean to is not. A change that
-   does something other than its stated intent is a finding.
+   does something other than its stated intent is a finding. The approach
+   taken to reach the goal is part of the execution; whether your role judges
+   it, your role file says.
 3. **Then go and read.** Changed files in full, the call paths in and out, and
    how the codebase already does this kind of thing.
 4. **Form findings from what you read**, and cite it.

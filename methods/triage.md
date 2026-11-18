@@ -24,7 +24,7 @@ with its reason. Recorded in `round.md` and shown in the review's last line.
    |---|---|
    | **security** | an entry point or input handling; authentication, permissions or ownership; money; uploads, file paths or outbound requests; secrets, tokens or crypto; deserialisation; output escaping; a check loosened anywhere |
    | **correctness** | any change to behaviour — every code change except formatting, comments or renames with no effect |
-   | **architect** | a new file, class or module; code moved between places; a new dependency or a changed import direction; new public surface — routes, hooks, options, public methods; a change spread across several areas |
+   | **architect** | a new file, class or module; code moved between places; a new dependency or a changed import direction; new public surface — routes, hooks, options, public methods; a change spread across several areas; a bug fix; new behaviour beyond a few lines; a workaround, retry, special case, cache or flag added to get around something |
 
    Each pack the project turns on adds its own, in its `signals.md` — the
    WordPress pack's, for example, names AJAX handlers, REST routes and

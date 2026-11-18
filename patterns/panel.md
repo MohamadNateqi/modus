@@ -47,6 +47,7 @@ synthesis's job.
   (`tasks/review.md`), or a note that this is the first round or that it
   could not be trusted;
 - the base and head SHAs, and the round number;
+- who the result is for: a person, or an agent (`--for agent`);
 - the same line: *return, do not write.*
 
 ## Decisions

@@ -9,6 +9,32 @@ where someone else put it.
 change easier or harder?** Structure is judged by the changes it makes cheap,
 not by how it looks.
 
+## The approach comes before the code
+
+Code can be well placed and well written and still be the wrong way to solve
+the problem. The same goal can often be reached with less code, less state or
+less risk. What the wrong approach costs:
+
+- **A fix at the symptom** leaves the cause in place. A guard where the bad
+  value shows up, a retry around a failure nobody explained, a special case
+  for the one input that was reported: the next caller, path or input hits
+  the same cause, and now there are two behaviours to keep apart. A fix
+  belongs where the bad state is first created.
+- **Building what the platform already has** — a framework feature, the
+  standard library, a dependency the project already uses — adds code to
+  maintain that is usually less tested than what it replaces, and misses the
+  cases the existing one already handles.
+- **Machinery beyond the problem** — a queue, a cache, a new table, a
+  configuration option where a direct call, a query or a constant would do —
+  adds states and failure modes that the requirement never needed.
+- **Working against the grain** of how the codebase or framework expects a
+  thing to be done needs every later change to know the exception.
+
+An alternative only counts when it reaches the same goal under the same
+constraints. "It could have been done another way" says nothing; "this adds a
+cache that must be invalidated on four writes, where the existing index makes
+the query cheap" says what the approach costs.
+
 ## Placement
 
 Code belongs next to what changes with it, for the same reason. Logic about

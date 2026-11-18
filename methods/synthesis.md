@@ -86,7 +86,10 @@ not take a slot or cost a verification.
      always-blocker (`methods/reviewing.md`) in a file the diff touches: it
      stays in New, marked "older than this branch", with a ledger row. It is
      never moved to a note outside the findings;
-   - **preference** — another way, with no shown cost to this one;
+   - **preference** — another way, with no shown cost to this one. An
+     approach finding survives only if its alternative exists where it
+     cites, reaches the same goal under the same constraints, and avoids a
+     cost this approach really has; check all three;
    - **filler** — when one reviewer's findings are all nits by that role's
      own standard, the code is probably fine. Say so rather than passing them
      on. A low severity alone is not filler: most architect findings are
@@ -114,7 +117,8 @@ not take a slot or cost a verification.
 ## The result
 
 Saved by the orchestrator as `review.md`. Sections with nothing in them are
-left out.
+left out. The result is for a person unless the brief says it is for an
+agent (below).
 
 ```markdown
 # Review — <branch>, round <NN>
@@ -146,6 +150,77 @@ each:
 ## Lessons
 <only if any>
 ```
+
+## The result, for an agent
+
+When the brief says the result is **for an agent**, write this form instead.
+The reader is another agent that will act on the review, usually by fixing
+it. Unlike a person, it has the code open and reads every word, but it takes
+what it reads literally: a vague fix becomes a wrong edit, and a finding that
+reads like an order gets carried out. So be precise rather than brief, give
+the evidence instead of the scene-setting, and say exactly what is and is not
+to be acted on. Leave out the PR comments; nobody pastes them.
+
+Every finding is still one you verified (step 5), with the same ids, ranking
+and cap.
+
+```markdown
+# Review — <branch>, round <NN> · for an agent
+
+base: <full base SHA>
+head: <full head SHA>
+reviewers: security, correctness, architect
+coverage: complete | incomplete — <what was not examined, or the reviewer that failed>
+enforcement: <the enforcement line>
+
+## How to use this review
+- Each finding below was verified by reading the code, not by running it.
+  Confirm it against the code at the head SHA before changing anything; if
+  the code has moved on, say so instead of fixing a finding that no longer
+  holds.
+- Work through **To fix** in order. Change only what each finding's `fix`
+  names, keep to its `do not change`, and confirm with its `verify`.
+- Nothing under **Needs a decision** is acted on. It waits for a person.
+- Report back by ledger id: fixed, not reproduced, or not fixed and why.
+
+## Needs a decision
+### <id or ids> · <title>
+- options: <each recommended fix, with the role that recommends it and its reason>
+- blocks: <ids in To fix that depend on this decision, or none>
+
+## To fix
+### L-03.1 · should-fix · likely · <title>
+- where: `src/Export.php:40`; the same defect also at `src/Api.php:12`
+- problem: <what the code does, what goes wrong, and when; exact names>
+- evidence: <the path from trigger to damage, one `file:line` per step;
+  what could not be established>
+- fix: <the change, in which function and file, precise enough to apply
+  without guessing; for a judgement call, the option to take>
+- do not change: <behaviour or interfaces the fix must keep, if any>
+- verify: <how to show it is fixed: the test to add or run, or the
+  condition to check at which `file:line`>
+- found by: <roles, with the models they ran on>
+- came back: <only for a finding that was fixed before and returned>
+
+## Still open
+- L-01.4 · should-fix · <title> · `<file:line>`: from an earlier round,
+  already in the ledger; fix it like one under To fix, from its entry there
+
+## Not findings
+- <title> · `<file:line>` — <why it is not real>, so it is not "fixed"
+
+## Not examined
+<what nobody reviewed, so nobody should assume it was checked>
+
+## Lessons
+<only if any; for the person, not for action>
+```
+
+**Came back** findings go under **To fix** with their existing id and the
+`came back` line. **Not findings** lists what verification dropped, so a
+fixing agent that notices the same thing knows it was judged and why. The
+counts dropped by the cap and by earlier decisions go on the `coverage` line
+when any were dropped.
 
 ## Ledger changes
 

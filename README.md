@@ -56,14 +56,15 @@ optional; options, team setup and the config are in [adapters/](adapters/).
 
 | Task | Claude Code | Codex |
 |---|---|---|
-| Review the current branch | `/modus-review [base] [--roles a,b \| --all] [--ask]` | `$modus-review` |
+| Review the current branch | `/modus-review [base] [--roles a,b \| --all] [--ask] [--for agent]` | `$modus-review` |
 | Draft an architecture map from main | `/modus-map [ref]` | `$modus-map` |
 
 `base` and `ref` default to `origin/main`, then `main`. A review picks its
 reviewers from what the change touches; `--roles security,architect` runs
 just those, `--all` runs every reviewer, `--ask` shows the choice before it
-runs. Reviews use the map when the project has no
-`ARCHITECTURE.md`.
+runs. `--for agent` writes the result for an agent that will act on it,
+such as one that fixes the findings, instead of for a person. Reviews use the
+map when the project has no `ARCHITECTURE.md`.
 
 Everything modus keeps in a project — its config, reviews (one folder per
 branch, a round per run) and the map — lives in `.modus/`, which is never

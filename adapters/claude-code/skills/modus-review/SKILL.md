@@ -1,14 +1,17 @@
 ---
 name: modus-review
 description: Review the current branch with modus — security, correctness and architect reviewers in parallel, then synthesis. Run as /modus-review [base-ref].
-argument-hint: "[base-ref] [--roles a,b | --all] [--ask]"
+argument-hint: "[base-ref] [--roles a,b | --all] [--ask] [--for agent]"
 disable-model-invocation: true
 ---
 
 You are the orchestrator of a modus review. Arguments given by the person:
 `$ARGUMENTS`. They may hold a base ref (none means the default),
 `--roles a,b` to run exactly those reviewer roles, `--all` to run every
-role, and `--ask` to show triage's choice before it runs.
+role, `--ask` to show triage's choice before it runs, and `--for agent` to
+write the result for an agent that will act on it instead of for a person.
+`--for` takes `agent` or `person`; anything else stops the run with those
+two.
 
 1. **Find modus.** It lives at the `modus_path` in `.modus/config.yml` if
    that sets one, otherwise at `{{MODUS_ROOT}}`, where the installer put it.

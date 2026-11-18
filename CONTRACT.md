@@ -228,8 +228,10 @@ Expected roles to start: **architect**, **implementer**, **test writer**,
 one and its absence cost something.
 
 The architect has two duties beyond planning:
-- to judge structure, i.e. whether code belongs where it was put, and whether a
-  proposed approach fits the codebase;
+- to judge structure and approach, i.e. whether code belongs where it was
+  put, whether an approach fits the codebase, and whether a clearly better
+  way to reach the same goal exists, such as fixing a cause rather than
+  guarding a symptom;
 - to decide on the **structural suggestions** writers report (section 6.4).
 
 When a pattern has no architect, as in solo, planning falls to the agent doing
@@ -325,6 +327,10 @@ not the core.
 Every command that runs triage takes an approval parameter, `--auto` or
 `--ask`, which overrides the default for that run (section 5.9).
 
+A command whose result someone acts on takes `--for agent` when the reader
+will be another agent rather than a person. The default is a person (section
+6.6).
+
 ### 5.9 Triage
 
 Not a ninth kind of file: triage is a method (`methods/triage.md`) and the
@@ -361,6 +367,7 @@ they add, tuned over time:
 |---|---|
 | touches input, auth or payments | security role |
 | new structure, or code with no obvious home | architect |
+| a bug fix, new behaviour, or a workaround around something | architect, to judge the approach |
 | changes behaviour that has no tests | test writer; coverage and mutation measures |
 | refactors code that has no tests | characterisation tests before the change |
 | behaviour that is costly to get wrong: money, access, data loss | contract or black-box testing mode |
@@ -493,6 +500,17 @@ It:
 7. **merges** the Covered lists, so gaps in what was examined are visible;
 8. **collects lessons** from every reviewer and shows them after the
    findings (section 8.3).
+
+**Who reads it.** The result is written for a person by default: short and
+plain (rule 10), each finding with a PR comment. With `--for agent` it is
+written for an agent that will act on it, usually by fixing the findings: the
+same verified findings, ids and cap, but each with its evidence, a precise
+fix, what the fix must not change and how to confirm it, and no PR comments.
+It states what is not to be acted on, since an agent carries out whatever
+reads like an instruction: anything that needs a decision waits for the
+decider (rule 9). Only synthesis's result and the run's closing message
+change; reviewers work the same either way, so the choice cannot change what
+is found.
 
 **Majority voting** means running the review several times and keeping only
 findings most runs report. It costs several times as much, so it is not built

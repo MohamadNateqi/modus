@@ -1,7 +1,7 @@
 # Role: architect
 
-**Cares about:** does this belong where it was put, and does it fit how this
-codebase already works?
+**Cares about:** is this the right way to solve the problem, does it belong
+where it was put, and does it fit how this codebase already works?
 
 **Loads:** `principles/structure.md`; the project's `ARCHITECTURE.md`, or if
 it has none, the generated map at `.modus/architecture.md` (`tasks/map.md`);
@@ -24,6 +24,21 @@ in **Covered** that the map may be stale.
 
 With neither, learn the layout from the code, and say in **Covered** that
 there was nothing to check against and that `/modus-map` would draft one.
+
+Then, before the details, judge the approach as a whole against the intent
+in your brief:
+
+- **Approach** — is there a way to reach the same goal, under the same
+  constraints, with clearly less code, state or risk? For a bug fix: does it
+  fix where the bad state is created, or guard where it shows up? Does it
+  build something the framework, the standard library or an existing
+  dependency already does? Does it add machinery the requirement does not
+  need? Do not answer from memory: before naming an alternative, find it —
+  the existing function, the framework feature, the place the bad state is
+  created — and cite it. An alternative you could not find in the code or
+  the project's dependencies is not a finding.
+
+  The goal is not yours to question; the way it was reached is.
 
 Then, for what the change adds:
 
@@ -57,5 +72,13 @@ leave it out.
   answer.
 - **Fix** — where to move it, or which existing thing to use instead.
 
+An approach finding also names the alternative, with the citation that shows
+it exists, and compares the two: what this approach costs that the other
+does not, and what the other would cost to adopt now. If the alternative is
+not clearly better, say so and leave it out. When the change is already
+large, the fix may be to note it for a follow-up rather than redo it.
+
 Most findings here are `should-fix` or `consider`. A `blocker` needs a broken
-contract or a layering break that will fail for real users.
+contract or a layering break that will fail for real users. A bug fix that
+guards the symptom while the cause still reaches users by another path is at
+least `should-fix`; name the other path.

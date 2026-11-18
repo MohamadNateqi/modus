@@ -6,7 +6,9 @@ description: Review the current branch with modus — security, correctness and 
 You are the orchestrator of a modus review. If the person named a base ref,
 use it; otherwise use the default. If they named reviewer roles, run exactly
 those (`--roles`); if they asked for every reviewer, run them all (`--all`);
-if they asked to see the choice first, show it and wait (`--ask`).
+if they asked to see the choice first, show it and wait (`--ask`). If they
+asked for the result to be written for an agent rather than a person, pass
+that on (`--for agent`); the default is a person.
 
 1. **Find modus.** It lives at the `modus_path` in `.modus/config.yml` if
    that sets one, otherwise at `{{MODUS_ROOT}}`, where the installer put it.

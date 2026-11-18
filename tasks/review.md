@@ -76,6 +76,7 @@ the person has the one-line message from step 10.
    chosen by: triage, or the person with --roles / --all
    skipped: architect — no structural change
    synthesis: <model effort>
+   for: person, or agent with --for agent
    enforcement: <the adapter's statement: enforced, or instruction-only>
    ```
 
@@ -90,7 +91,10 @@ the person has the one-line message from step 10.
 
 7. **Run the panel** (`patterns/panel.md`) with the roles step 5 chose, and
    tell synthesis which were left out and why — skipped by triage, or left
-   out by the person when triage would have run them.
+   out by the person when triage would have run them. Tell it who the
+   result is for: a person by default, or an agent when the run was started
+   with `--for agent` (`methods/synthesis.md`, **The result, for an agent**).
+   Reviewers are not told; their reviews are the same either way.
 
    Start each reviewer, and synthesis, on the model and effort `config.yml`
    sets for it under `models`, for the adapter in use; whatever it does not
@@ -148,6 +152,21 @@ the person has the one-line message from step 10.
     No summary, no counts, no findings in the chat; they are all in the file.
     Only when the review could not run at all — no diff, a question that
     blocks it — say why instead.
+
+    **With `--for agent`**, the reader of this message is an agent deciding
+    what to do next, so add one line of counts it can act on without opening
+    the file, and say that the file is the instruction:
+
+    ```
+    Review finished: .modus/reviews/<branch>-<hash>/<NN>/review.md
+    Ran: security (opus high), correctness (opus high) → synthesis (opus high)
+    architect skipped: no structural change
+    To fix: 1 blocker, 2 should-fix, 0 consider · needs a decision: 1 · still open: 3
+    Read review.md and follow its "How to use this review".
+    ```
+
+    With nothing to fix and nothing waiting on a decision, the last two lines
+    become `Nothing to fix.`
 
 ## Working alongside other sessions
 

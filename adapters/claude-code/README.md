@@ -19,6 +19,7 @@ plugin agents, so reviewers would lose their read-only shell.
 ```
 /modus-review            # against origin/main, else main
 /modus-review develop    # against another base
+/modus-review --for agent   # result written for an agent to act on
 ```
 
 ## What is enforced
