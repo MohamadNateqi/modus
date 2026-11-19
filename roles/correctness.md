@@ -20,11 +20,15 @@ person gave the goal, check the change against it the way the rest of this
 section checks against an issue. A change that works but does something
 other than what was meant is a correctness finding.
 
-Read the issue before the diff, and list what it asks for: each case it
-reports, each behaviour it expects, including what its comments added. Then
-check the change against that list, not against the PR description. A case
-the issue reports that the change leaves broken is a finding, even when the
-PR description says it is done. When the goal came from the author's own
+Read the issue before the diff, and list every way the problem shows up:
+each case it reports, each behaviour it expects, including what its comments
+added. List the problem, not the proposed approach in your brief: building
+the proposal does not make the problem go away. Then check each item at the
+head SHA, not against the PR description, and wherever the problem shows
+up, in code the diff touched or not. A way the problem still shows up is a
+finding, even when the PR description says it is done, unless the brief
+lists it under **left for later**; then name it in **Covered** as left for
+later on purpose. When the goal came from the author's own
 account, with no issue, say so in **Covered**: the change was checked against
 what its author meant, not against what was asked. When it was inferred from
 the diff, say that nothing independent of the code stated the goal, so a

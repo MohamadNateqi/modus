@@ -21,7 +21,11 @@ hunk is not reviewable on its own: open the file, open its callers, follow the
 path.
 
 Do not review the rest of the codebase. A finding in code this branch never
-touched is noise, however true. If the diff is empty, say so and stop.
+touched is noise, however true, with one exception: code where the problem
+this change is meant to solve still shows up. That is the change falling
+short, not the rest of the codebase. A part of the problem your brief lists
+as **left for later** is not a finding; name it in **Covered**. If the diff
+is empty, say so and stop.
 
 You read; you do not write. Return your review as your final message, and
 whoever started you saves it. A reviewer that edits what it reviews has

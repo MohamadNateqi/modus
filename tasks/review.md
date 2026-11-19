@@ -47,8 +47,17 @@ the person has the one-line message from step 10.
      tool the session already has for it, or from a file given with
      `--issue`.
    - **Write the goal** in one paragraph: the problem, and what counts as
-     solved. Take it from the first of these that says what the change is
-     for, and record which one in `intent from`:
+     solved, judged by the problem: every way it shows up is gone. Keep the
+     problem apart from any fix proposed for it. An issue that says "add an
+     Appearance tab" proposes an approach; the problem is what made someone
+     ask for it — settings that are hard to find, or that conflict. Record
+     a proposed fix separately as `proposed approach`, from the issue, the
+     PR or the person's goal; it is not the goal, and a change that builds
+     it has not solved the problem unless the problem is gone. Also record
+     any part of the problem the PR says it leaves for later, with the
+     reference it gives (`icon colours in a follow-up, #45`), as `left for
+     later`. Take the goal from the first of these that says what the change
+     is for, and record which one in `intent from`:
      0. **the goal the person gave** with `--goal "<text>"` — they know what
         the branch is for better than any text found for it. Use their words
         as the goal, tidied only into a paragraph, and record `intent from:
@@ -123,6 +132,8 @@ the person has the one-line message from step 10.
    started: <UTC date and time>
    modus: 0.1.0 · 9b499c6 · modified · adapter 0.1.0
    intent: <the goal paragraph from step 1>
+   proposed approach: <the fix the issue, PR or person proposed, or none>
+   left for later: <parts of the problem the PR defers, with its reference, or none>
    intent from: given by the person, or: issue #123 <url> · PR #130 <url>, or: the author's account, PR #130, no issue, or: inferred from the diff, gh not installed
    reviewers: security (<model effort>), correctness (<model effort>)
    chosen by: triage, or the person with --roles / --all
@@ -158,6 +169,8 @@ the person has the one-line message from step 10.
    effort: <your effort>
    ---
    goal: <the goal paragraph>
+   proposed approach: <or none>
+   left for later: <or none>
    from: issue #123 <url> · PR #130 <url>
    fetched: <UTC date and time>
 

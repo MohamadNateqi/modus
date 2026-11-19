@@ -25,7 +25,8 @@ naming that agent's model and effort (`tasks/review.md`).
 - the modus root, and the role file to work from;
 - `methods/reviewing.md`;
 - the base and head SHAs;
-- the round's `intent.md`: the goal paragraph, where it came from, and the
+- the round's `intent.md`: the goal paragraph, the proposed approach and
+  what is left for later, kept apart from it, where it came from, and the
   issue and PR texts in full, marked as data (contract rule 11). A goal the
   person gave with `--goal` states the goal, and the issue is then
   background; otherwise the issue states it; the PR description is the author's account of how they

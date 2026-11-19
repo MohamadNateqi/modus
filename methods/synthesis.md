@@ -82,7 +82,10 @@ not take a slot or cost a verification.
      finding is about what the change commits the project to, so "nothing
      calls it today" does not disprove it; show that nothing gets harder;
    - **missing context** — the pattern is how the rest of the codebase does
-     it, or the code was not changed by this diff. This never removes an
+     it, or the code was not changed by this diff. "Not changed by this
+     diff" does not disprove a finding that the problem the change is meant
+     to solve still shows up there (`methods/reviewing.md`, Scope); a part
+     the round lists as left for later does. This never removes an
      always-blocker (`methods/reviewing.md`) in a file the diff touches: it
      stays in New, marked "older than this branch", with a ledger row. It is
      never moved to a note outside the findings;

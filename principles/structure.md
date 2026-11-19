@@ -56,6 +56,11 @@ its colour from the old one, so changing the new setting changes everything
 except the icon. Callers of the old place are found by searching for it, not
 by remembering them.
 
+A move is finished by the problem it was for, not by the list of things it
+moved. When settings move because they were hard to find, every setting
+that still drives that screen from the old place keeps the problem alive,
+including ones the change never touched.
+
 ## The codebase's way first
 
 A second way to do something the codebase already does — another HTTP client,
