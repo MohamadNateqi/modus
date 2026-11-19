@@ -41,6 +41,21 @@ Code belongs next to what changes with it, for the same reason. Logic about
 an object's data, written into one caller instead of onto the object, gets
 written again by the next caller, and the copies drift.
 
+The same holds where people meet the code. A setting, screen or option
+belongs beside the ones that control the same thing. Split them across two
+tabs or menus, and users change one without finding the other, and each new
+setting has two plausible homes.
+
+## Finish the move
+
+A change that moves something — a setting, a source of truth, a
+responsibility — is finished only when nothing still reads or writes the old
+place. One reader left behind means part of the behaviour still comes from
+the old place: colours move to a new settings tab, but the icon still takes
+its colour from the old one, so changing the new setting changes everything
+except the icon. Callers of the old place are found by searching for it, not
+by remembering them.
+
 ## The codebase's way first
 
 A second way to do something the codebase already does — another HTTP client,

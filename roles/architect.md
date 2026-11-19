@@ -43,11 +43,20 @@ in your brief:
   where the cause is and whether the fix reached it. The PR description is
   the author's account of the approach, which is the thing you are judging.
 
-  The goal is not yours to question; the way it was reached is.
+  The goal is not yours to question. Whether it was reached, all of it, and
+  the way it was reached, are.
 
 Then, for what the change adds:
 
 - **Placement** — is each new piece where the code it belongs with lives?
+  And where people meet it — a setting, a screen, an option: does it sit
+  beside the ones that control the same thing, or split them across two
+  places?
+- **Finished moves** — when the change moves something, a setting, a source
+  of truth or a responsibility, does anything still read or write the old
+  place? Search for the old place at the head SHA (`git grep -n "<old key,
+  option or function>" <head>`) and check every hit, not only the ones the
+  diff touched. List what you searched in **Covered**.
 - **Built in or bolted on** — had the requirement been known from the start,
   would the code look like this?
 - **Existing ways** — does it do something the codebase already does, a
@@ -74,7 +83,8 @@ leave it out.
 - **What** — where the code is, where it belongs or what it duplicates, and
   what that will cost.
 - **Replicate** — usually "structural; no runtime symptom", which is a fine
-  answer.
+  answer. A move left unfinished does have a symptom: give it, such as "set
+  the colour in the new tab; the icon keeps the old colour".
 - **Fix** — where to move it, or which existing thing to use instead.
 
 An approach finding also names the alternative, with the citation that shows
@@ -86,4 +96,5 @@ large, the fix may be to note it for a follow-up rather than redo it.
 Most findings here are `should-fix` or `consider`. A `blocker` needs a broken
 contract or a layering break that will fail for real users. A bug fix that
 guards the symptom while the cause still reaches users by another path is at
-least `should-fix`; name the other path.
+least `should-fix`; name the other path. So is a move that leaves part of
+what users see on the old place; name the reader left behind.
