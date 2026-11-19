@@ -21,7 +21,8 @@ node ~/modus/adapters/install.js
 That installs both adapters for your user, so every project gets them. The
 installed files point back at the clone: `git pull` there updates the core
 files for every project. Re-run the installer after a pull that changes
-anything under `adapters/`.
+anything under `adapters/`. A review says so when the installed command is
+older than the modus it reads, and records which version ran it.
 
 | | |
 |---|---|

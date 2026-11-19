@@ -609,7 +609,9 @@ know what the earlier rounds found and what the decider decided.
 - **Each round records the code it saw.** `round.md` holds the repository and
   the base and head SHAs, and every ledger entry points at the round that
   last checked it. "Fixed" and "came back" are judged against those SHAs, so
-  findings stay tied to the code actually reviewed, rebases included.
+  findings stay tied to the code actually reviewed, rebases included. It
+  also records the modus that reviewed it (section 9), so a change in
+  findings between rounds can be told apart from a change in modus.
 - **Never committed.** Everything modus keeps in a project lives under
   `.modus/`: config, conventions, reviews, history, lessons and the
   generated map. The folder keeps itself out of git with its own
@@ -763,6 +765,16 @@ before it is kept.
   (memory, MCP servers, status line, model choice) stays out (section 2).
 - **Code is allowed** in adapters, in pack measure recipes, and in the eval
   harness. Nowhere else.
+- **Versions.** modus's version is in `VERSION`, as `major.minor.patch`.
+  Raise the minor number with a change to what a run does or produces — a
+  step, a flag, a file it writes, an output format — and the patch number
+  with any other change to a file a run loads. `notes/`, `evals/` and the
+  READMEs do not count. The major number stays 0 until the calibration
+  corpus (section 11) exists. Every run records the version, the commit, and
+  whether the files it read had changes not yet committed; the version alone
+  is too coarse, and the commit alone means nothing to a person. The
+  installer writes the version into what it installs, so a run can tell when
+  its installed command is older than the core it reads.
 
 ## 10. Project side
 

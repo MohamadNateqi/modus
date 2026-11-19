@@ -57,7 +57,10 @@ For each run:
   on a clean case, and on bug cases any finding you judge invalid.
 
 Keep the two numbers apart, and average over the three runs. Record each
-evaluation in `results/<date>-<what changed>.md`:
+evaluation in `results/<date>-<what changed>.md`, starting with the `modus`
+line from the runs' `round.md`, so every result names the version it
+measured. Runs on a `modified` modus are fine while trying a change, but
+commit it before the run that decides whether to keep it.
 
 ```markdown
 | case | type | held out | caught (of 3) | wrong findings (avg) |

@@ -30,9 +30,11 @@ two.
    a model (`opus`, `sonnet`, `haiku`, `fable`), optionally followed by an
    effort (`low`, `medium`, `high`, `xhigh`, `max`). Leave unset whatever the
    config does not give.
-4. **Enforcement**, for `round.md`: `enforced: reviewers and synthesis have
+4. **Version**, for `round.md`'s `modus` line: this command was installed
+   from modus `{{MODUS_VERSION}}`; that is the `adapter` version.
+5. **Enforcement**, for `round.md`: `enforced: reviewers and synthesis have
    no edit tools and a read-only shell (Claude Code adapter)`.
-5. **File headers** (`tasks/review.md`): your own model is the model id your
+6. **File headers** (`tasks/review.md`): your own model is the model id your
    session states, and your effort the one it states, else `unknown`. An
    agent's are the `model` and `effort` you set on it, or yours where you
    left them unset.

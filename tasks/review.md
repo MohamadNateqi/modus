@@ -114,6 +114,7 @@ the person has the one-line message from step 10.
    base: <base ref> @ <base SHA>
    head: <head SHA>
    started: <UTC date and time>
+   modus: 0.1.0 · 9b499c6 · modified · adapter 0.1.0
    intent: <the goal paragraph from step 1>
    intent from: issue #123 <url> · PR #130 <url>, or: the author's account, PR #130, no issue, or: inferred from the diff, gh not installed
    reviewers: security (<model effort>), correctness (<model effort>)
@@ -123,6 +124,21 @@ the person has the one-line message from step 10.
    for: person, or agent with --for agent
    enforcement: <the adapter's statement: enforced, or instruction-only>
    ```
+
+   The `modus` line says which modus ran the review, so results from
+   different versions can be told apart:
+   - the version in `<modus>/VERSION`;
+   - the commit, `git -C <modus> rev-parse --short HEAD`, or `commit
+     unknown` if modus is not a git checkout;
+   - `modified` when `git -C <modus> status --porcelain
+     --untracked-files=no` prints anything: the run used edits not in any
+     commit, so the version and commit alone do not say what ran;
+   - `adapter` and the version the adapter says it was installed from. When
+     it differs from `VERSION`, the installed command is out of date: say so
+     at the top of `review.md` and in the closing message — `the installed
+     /modus-review is from 0.1.0, modus is 0.2.0: re-run
+     adapters/install.js`. An installed command that states no version
+     predates versioning: write `adapter unknown` and say the same.
 
    Beside it, write `intent.md`: the texts step 1 read, as they were, so a
    later round can see what this one was judged against even if the issue is
@@ -187,7 +203,7 @@ the person has the one-line message from step 10.
      first line after the header.
 
    Everything the person needs goes into `review.md`, not the chat: put at
-   its top any change from step 7, any role that is missing, anything
+   its top the `modus` line from `round.md`, then any change from step 7, any role that is missing, anything
    untrusted from step 2, the enforcement line if instruction-only, and any
    round that ran alongside this one (step 9).
 
@@ -333,8 +349,8 @@ synthesis's role counts, so triage can later propose skipping a role that
 keeps finding nothing (contract 5.9):
 
 ```markdown
-- 2026-10-22 · feature/order-export · round 01 · security · opus high · reported 3 · survived 1
-- 2026-10-22 · feature/order-export · round 01 · architect · sonnet · reported 2 · survived 0
+- 2026-10-22 · feature/order-export · round 01 · modus 0.1.0 · security · opus high · reported 3 · survived 1
+- 2026-10-22 · feature/order-export · round 01 · modus 0.1.0 · architect · sonnet · reported 2 · survived 0
 ```
 
 `survived` counts the role's findings that synthesis kept in New or Came

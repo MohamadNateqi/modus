@@ -24,6 +24,16 @@ const MARK = 'modus-installed';
 const ADAPTERS = path.resolve(__dirname);
 const MODUS_ROOT = path.resolve(ADAPTERS, '..');
 
+// Written into the installed skills, so a review can tell when the command
+// it runs is older than the core files it reads, and say to re-install.
+function modusVersion() {
+  try {
+    return fs.readFileSync(path.join(MODUS_ROOT, 'VERSION'), 'utf8').trim() || 'unknown';
+  } catch {
+    return 'unknown';
+  }
+}
+
 const FILES = {
   'claude-code': [
     { src: 'claude-code/skills/modus-review/SKILL.md', dest: ['.claude', 'skills/modus-review/SKILL.md'] },
@@ -89,7 +99,8 @@ function locations(projectDir) {
 function render(src, where) {
   let text = fs.readFileSync(path.join(ADAPTERS, src), 'utf8')
     .replaceAll('{{MODUS_ROOT}}', where.root)
-    .replaceAll('{{HOOK_PATH}}', where.hook);
+    .replaceAll('{{HOOK_PATH}}', where.hook)
+    .replaceAll('{{MODUS_VERSION}}', modusVersion());
   const note = `${MARK} from ${posix(MODUS_ROOT)}. Re-run adapters/install.js to update; edits here are overwritten.`;
   if (src.endsWith('.toml')) return `# ${note}\n${text}`;
   // Frontmatter must stay on the first line, so the note goes after it.

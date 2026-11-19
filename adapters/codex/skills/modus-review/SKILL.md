@@ -26,10 +26,12 @@ that on (`--for agent`); the default is a person.
    gives — a model, optionally followed by an effort — and synthesis on
    `models.codex.synthesis`. Leave the default for whatever the config does
    not give.
-4. **Enforcement**, for `round.md` and the report: `instruction-only:
+4. **Version**, for `round.md`'s `modus` line: this skill was installed
+   from modus `{{MODUS_VERSION}}`; that is the `adapter` version.
+5. **Enforcement**, for `round.md` and the report: `instruction-only:
    reviewers and synthesis are told not to write, but Codex cannot give
    them a separate read-only sandbox (Codex adapter)`.
-5. **File headers** (`tasks/review.md`): your own model is the one your
+6. **File headers** (`tasks/review.md`): your own model is the one your
    session runs on, and your effort its reasoning effort, else `unknown`. An
    agent's are the model and effort you spawned it on, or yours where you
    left them unset.
