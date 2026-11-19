@@ -49,7 +49,8 @@ Clone modus once and install it for your AI tools:
 node adapters/install.js
 ```
 
-Every project then has the commands. A project's `.modus/config.yml` is
+Every project then has the commands. `node adapters/install.js --check`
+shows which version is installed, and whether it needs re-installing. A project's `.modus/config.yml` is
 optional; options, team setup and the config are in [adapters/](adapters/).
 
 ## Commands

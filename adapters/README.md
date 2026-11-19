@@ -30,6 +30,7 @@ older than the modus it reads, and records which version ran it.
 | `--project <path>` | into one project instead of your user |
 | `--dry-run` | show what would change |
 | `--uninstall` | remove what the installer put there |
+| `--check` | show the version installed, and whether it matches this clone; changes nothing, exits 1 when out of date |
 
 The installer never overwrites or removes a file it did not install, unless
 you add `--force`.

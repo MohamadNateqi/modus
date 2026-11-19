@@ -7,11 +7,13 @@
 //   node adapters/install.js --dry-run            show what would change
 //   node adapters/install.js --uninstall          remove what it installed
 //   node adapters/install.js --force              overwrite files it did not install
+//   node adapters/install.js --check              show the installed version, change nothing
 //
 // Installed files point back at this checkout, so `git pull` here updates the
 // core files every project uses. Re-run the installer after a pull that
 // changes anything under adapters/.
 
+const { execFileSync } = require('child_process');
 const fs = require('fs');
 const os = require('os');
 const path = require('path');
@@ -50,7 +52,7 @@ const FILES = {
 };
 
 function parseArgs(argv) {
-  const args = { tools: Object.keys(FILES), project: null, dryRun: false, uninstall: false, force: false };
+  const args = { tools: Object.keys(FILES), project: null, dryRun: false, uninstall: false, force: false, check: false };
   for (let i = 0; i < argv.length; i += 1) {
     const a = argv[i];
     if (a === '--tool') {
@@ -63,6 +65,7 @@ function parseArgs(argv) {
     } else if (a === '--dry-run') args.dryRun = true;
     else if (a === '--uninstall') args.uninstall = true;
     else if (a === '--force') args.force = true;
+    else if (a === '--check') args.check = true;
     else if (a === '--help' || a === '-h') { usage(); process.exit(0); }
     else fail(`unknown option "${a}"`);
   }
@@ -101,7 +104,7 @@ function render(src, where) {
     .replaceAll('{{MODUS_ROOT}}', where.root)
     .replaceAll('{{HOOK_PATH}}', where.hook)
     .replaceAll('{{MODUS_VERSION}}', modusVersion());
-  const note = `${MARK} from ${posix(MODUS_ROOT)}. Re-run adapters/install.js to update; edits here are overwritten.`;
+  const note = `${MARK} ${modusVersion()} from ${posix(MODUS_ROOT)}. Re-run adapters/install.js to update; edits here are overwritten.`;
   if (src.endsWith('.toml')) return `# ${note}\n${text}`;
   // Frontmatter must stay on the first line, so the note goes after it.
   const end = text.indexOf('\n---', 3);
@@ -116,6 +119,69 @@ function ours(file) {
   return fs.readFileSync(file, 'utf8').includes(MARK);
 }
 
+// The version an installed file was stamped with, or null for a file
+// installed before the stamp carried one.
+function installedVersion(text) {
+  const match = text.match(new RegExp(`${MARK} (\\S+) from `));
+  return match ? match[1] : null;
+}
+
+function git(...argv) {
+  try {
+    return execFileSync('git', ['-C', MODUS_ROOT, ...argv], { encoding: 'utf8', stdio: ['ignore', 'pipe', 'ignore'] }).trim();
+  } catch {
+    return null;
+  }
+}
+
+// Compares what is installed with what this checkout would install now. A
+// file counts as current only if it is identical, so an adapter change made
+// without a version bump still shows as out of date.
+function check(args, base, where) {
+  const commit = git('rev-parse', '--short', 'HEAD');
+  const modified = commit !== null && git('status', '--porcelain', '--untracked-files=no') !== '';
+  console.log(`modus here: ${modusVersion()} · ${commit ?? 'commit unknown'}${modified ? ' · modified' : ''}`);
+
+  let stale = false;
+  let installedAny = false;
+  for (const tool of args.tools) {
+    const label = `${tool}, ${args.project ? 'project' : 'user'} (${posix(base)})`;
+    const versions = new Set();
+    let present = 0;
+    let differ = 0;
+    let foreign = 0;
+    for (const { src, dest } of FILES[tool]) {
+      const target = path.join(base, dest[0], dest[1]);
+      if (!fs.existsSync(target)) continue;
+      const text = fs.readFileSync(target, 'utf8');
+      if (!text.includes(MARK)) { foreign += 1; continue; }
+      present += 1;
+      versions.add(installedVersion(text) ?? 'before versioning');
+      if (text !== render(src, where)) differ += 1;
+    }
+    const total = FILES[tool].length;
+    if (present === 0) {
+      console.log(`${label}: not installed${foreign ? `; ${foreign} file(s) of the same name were not installed by modus` : ''}`);
+      continue;
+    }
+    installedAny = true;
+    const version = [...versions].join(', ');
+    if (differ === 0 && present === total) {
+      console.log(`${label}: ${version}, up to date`);
+    } else {
+      stale = true;
+      const missing = total - present;
+      const parts = [differ && `${differ} of ${total} files differ`, missing && `${missing} missing`].filter(Boolean);
+      console.log(`${label}: ${version}, out of date (${parts.join(', ')})`);
+    }
+  }
+
+  const rerun = `node ${posix(__filename)}${args.project ? ` --project ${posix(base)}` : ''}`;
+  if (stale) console.log(`Run: ${rerun}`);
+  else if (!installedAny) console.log(`Nothing installed here. Run: ${rerun}`);
+  process.exitCode = stale || !installedAny ? 1 : 0;
+}
+
 function main() {
   const args = parseArgs(process.argv.slice(2));
   const projectDir = args.project ? path.resolve(args.project) : null;
@@ -124,6 +190,11 @@ function main() {
   }
   const base = projectDir ?? os.homedir();
   const where = locations(projectDir);
+  if (args.check) {
+    if (args.uninstall || args.dryRun || args.force) fail('--check changes nothing; use it alone, with --tool or --project');
+    check(args, base, where);
+    return;
+  }
   const prefix = args.dryRun ? '(dry run) ' : '';
   let skipped = 0;
 

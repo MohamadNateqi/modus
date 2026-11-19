@@ -769,12 +769,14 @@ before it is kept.
   Raise the minor number with a change to what a run does or produces — a
   step, a flag, a file it writes, an output format — and the patch number
   with any other change to a file a run loads. `notes/`, `evals/` and the
-  READMEs do not count. The major number stays 0 until the calibration
+  READMEs do not count, and neither does the installer alone, since a run
+  never loads it. The major number stays 0 until the calibration
   corpus (section 11) exists. Every run records the version, the commit, and
   whether the files it read had changes not yet committed; the version alone
   is too coarse, and the commit alone means nothing to a person. The
   installer writes the version into what it installs, so a run can tell when
-  its installed command is older than the core it reads.
+  its installed command is older than the core it reads, and `install.js
+  --check` shows what is installed without running anything.
 
 ## 10. Project side
 
