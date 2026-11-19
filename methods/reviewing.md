@@ -227,6 +227,21 @@ where, the argument to pass. A two or three line patch when it is that small.
 For a judgement call, name the option you would take and say the other is
 defensible — do not present taste as a requirement.
 
+### When the goal is not reached
+
+A finding that the problem this change exists to solve still shows up — a
+**goal gap** — is the first thing the reader needs to know, and it is easy
+to skim past. So:
+
+- **Title it by the symptom** a user would see, in the issue's own words
+  where you can. The cause goes in **What**.
+- **Its fix is the change that removes the symptom.** Deferring that part to
+  a follow-up is not a fix; it is a decision about scope, and only the
+  person makes it. You may mention it, once, as that decision, never as one
+  of the fixes. Only the brief marks a part as left for later.
+- **Say it is a goal gap**, under the severity line, so synthesis can put it
+  first.
+
 ### PR comment
 
 Ready to paste into the pull request as is. One or two sentences, addressed to

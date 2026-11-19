@@ -504,6 +504,12 @@ It:
    architect recommend opposite fixes, both findings go to the decider side
    by side, each with its reason. Synthesis does not pick a winner;
 4. **verifies** each surviving finding by trying to disprove it;
+   - **puts an unreached goal first**: every surviving finding that the
+     problem the change exists to solve still shows up goes at the very top,
+     under **Goal not reached**, titled by what a user would see, and is
+     named in the run's closing message. It is not ranked against code
+     bugs. Deferring it is a scope decision for the decider, never offered
+     as a fix;
    - **puts a better approach first**: a verified approach finding of
      should-fix or above goes at the top, under **Rethink first**, and every
      other finding in code that approach would replace is marked as moot if

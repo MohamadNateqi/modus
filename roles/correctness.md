@@ -28,7 +28,8 @@ head SHA, not against the PR description, and wherever the problem shows
 up, in code the diff touched or not. A way the problem still shows up is a
 finding, even when the PR description says it is done, unless the brief
 lists it under **left for later**; then name it in **Covered** as left for
-later on purpose. When the goal came from the author's own
+later on purpose. Such a finding is a goal gap: write it as
+`methods/reviewing.md` says under **When the goal is not reached**. When the goal came from the author's own
 account, with no issue, say so in **Covered**: the change was checked against
 what its author meant, not against what was asked. When it was inferred from
 the diff, say that nothing independent of the code stated the goal, so a

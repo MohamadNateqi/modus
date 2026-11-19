@@ -102,13 +102,29 @@ not take a slot or cost a verification.
    disproves it. A drop is a claim about code, held to the same rule as a
    finding: no citation, no drop.
 
-6. **Rethink first.** An approach finding (`roles/architect.md`) that
+6. **Goal not reached.** Every surviving finding that the problem this
+   change exists to solve still shows up, in a part the round does not list
+   as left for later, goes under **Goal not reached**, whatever role raised
+   it and whether or not it calls itself a goal gap. It is not ranked
+   against the other findings: whether the change closes its issue comes
+   before any code bug. It keeps its ledger id, counts toward the cap, and
+   the cap never drops it. Its title is the symptom a user would see; if
+   the reviewer's title is in implementation terms, rewrite it and keep the
+   cause in **What**.
+
+   If a reviewer offered deferring the gap to a follow-up as a fix, take it
+   out of the fix and put it under **Needs a decision**: finish it here, or
+   defer it — the person's call. Never present it as one of the fixes.
+
+7. **Rethink first.** An approach finding (`roles/architect.md`) that
    survived step 5 at `should-fix` or `blocker` changes how the rest reads:
    if the author takes the alternative, part of this diff goes away, and the
    findings in it with it. Put it under **Rethink first**, not New. It keeps
    its ledger id and counts toward the cap. If several qualify, keep the
    strongest there and the rest in New. A `consider` approach finding stays
-   in New.
+   in New. When the approach finding is the cause of a goal gap, it stays
+   in Goal not reached, listed once, and Rethink first holds one line
+   pointing at it.
 
    Then, for every other New and Came back finding, ask whether it sits in
    code the alternative would replace. If it does, mark it `moot if L-03.1
@@ -118,11 +134,11 @@ not take a slot or cost a verification.
    and then every finding stands as it is. You do not decide whether the
    approach changes.
 
-7. **Rank** by severity, then confidence (`methods/reviewing.md`).
+8. **Rank** by severity, then confidence (`methods/reviewing.md`).
 
-8. **Cap** New and Came back together at ten. Count what was dropped.
+9. **Cap** New and Came back together at ten. Count what was dropped.
 
-9. **Merge the Covered lists.** Name what nobody examined, when it matters:
+10. **Merge the Covered lists.** Name what nobody examined, when it matters:
    "no reviewer looked at the migration path". Check the lists against
    `git diff --name-only <base> <head>`: a changed file that no role read in
    full, where its role applies, is a gap. Name it in the result's first
@@ -130,7 +146,7 @@ not take a slot or cost a verification.
    out, and why, in one line — including one the person left out that triage
    would have run.
 
-10. **Collect lessons** the reviewers reported, deduped. Most rounds have
+11. **Collect lessons** the reviewers reported, deduped. Most rounds have
     none.
 
 ## The result
@@ -146,17 +162,21 @@ base <short SHA> · head <short SHA> · reviewers: security, correctness, archit
 intent from: given by the person, or: issue #123 · PR #130, or: the author's own account, no issue, or: inferred from the diff, gh not installed
 <one line on anything not checked, and the enforcement line if instruction-only>
 
+## Goal not reached
+<each goal gap in full, with its ledger id, titled by the symptom a user would see>
+
 ## Rethink first
 <the approach finding in full, with its ledger id; then one line each:>
 If taken, moot: L-03.2, L-03.4 · carries over: L-03.3
 
 ## Needs a decision
-<conflicts, side by side>
+<conflicts, side by side; and for a goal gap a reviewer would defer: finish
+it here, or defer it to a follow-up>
 
 ## New
 <findings in full, as methods/reviewing.md defines them; give each its new ledger id.
 Under a finding's severity line, add `moot if L-03.1 is taken` or `carries over`
-when step 6 marked it>
+when step 7 marked it>
 
 ## Came back
 <findings in full, with their existing ledger id>
@@ -205,12 +225,18 @@ enforcement: <the enforcement line>
   Confirm it against the code at the head SHA before changing anything; if
   the code has moved on, say so instead of fixing a finding that no longer
   holds.
-- Work through **To fix** in order. Change only what each finding's `fix`
-  names, keep to its `do not change`, and confirm with its `verify`.
+- Work through **Goal not reached** first, then **To fix**, in order. Change
+  only what each finding's `fix` names, keep to its `do not change`, and
+  confirm with its `verify`. A goal gap whose deferral is under **Needs a
+  decision** waits for that decision.
 - Nothing under **Rethink first** or **Needs a decision** is acted on. It
   waits for a person. A finding marked `moot if` waits with it: fixing code
   the person may decide to replace is wasted work.
 - Report back by ledger id: fixed, not reproduced, or not fixed and why.
+
+## Goal not reached
+### L-03.2 · should-fix · certain · <the symptom a user would see>
+<the same fields as To fix, below>
 
 ## Rethink first
 ### L-03.1 · should-fix · likely · <title>
@@ -239,7 +265,7 @@ enforcement: <the enforcement line>
   condition to check at which `file:line`>
 - found by: <roles, with the models they ran on>
 - came back: <only for a finding that was fixed before and returned>
-- moot if: <L-03.1 is taken; only when step 6 marked it. A finding marked
+- moot if: <L-03.1 is taken; only when step 7 marked it. A finding marked
   `carries over` has no such line: fix it either way>
 
 ## Still open

@@ -37,10 +37,12 @@ in your brief:
   is the thing you are judging.
 
   List every way the problem shows up, from the issue, and search the head
-  SHA for each: where it still comes from. Check every place, not only the ones the diff touched, and list
-  what you searched in **Covered**. Where the problem still shows up, the
-  approach did not reach all of it, unless the brief lists that part under
-  **left for later**.
+  SHA for each: where it still comes from. Check every place, not only the
+  ones the diff touched, and list what you searched in **Covered**. Where
+  the problem still shows up, the approach did not reach all of it, unless
+  the brief lists that part under **left for later**. That finding is a
+  goal gap: write it as `methods/reviewing.md` says under **When the goal
+  is not reached**.
 
   Then: is there a way to solve the whole problem, under the same
   constraints, with clearly less code, state or risk, or a way that solves

@@ -78,8 +78,9 @@ optional; options, team setup and the config are in [adapters/](adapters/).
    sets one.
 4. **Synthesises.** A separate agent merges the findings, drops what earlier
    rounds already decided, tries to disprove the rest, and keeps the top ten.
-   If the architect found a clearly better approach, it comes first, under
-   **Rethink first**, with the findings that would go away if you take it
+   If the change leaves part of its problem unsolved, that comes first,
+   under **Goal not reached**, and is named in the chat. If the architect
+   found a clearly better approach, it comes next, under **Rethink first**, with the findings that would go away if you take it
    marked as such.
 5. **Saves the round** in `.modus/reviews/<branch>/<NN>/`: `review.md` is the
    result, `intent.md` the texts it was judged against. The chat gets only
