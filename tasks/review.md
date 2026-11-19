@@ -48,15 +48,14 @@ the person has the one-line message from step 10.
      `--issue`.
    - **Write the goal** in one paragraph: the problem, and what counts as
      solved, judged by the problem: every way it shows up is gone. Keep the
-     problem apart from any fix proposed for it. An issue that says "add an
-     Appearance tab" proposes an approach; the problem is what made someone
-     ask for it — settings that are hard to find, or that conflict. Record
+     problem apart from any fix proposed for it. An issue that names a fix
+     proposes an approach; the problem is what made someone ask for it.
+     Record
      a proposed fix separately as `proposed approach`, from the issue, the
      PR or the person's goal; it is not the goal, and a change that builds
      it has not solved the problem unless the problem is gone. Also record
      any part of the problem the PR says it leaves for later, with the
-     reference it gives (`icon colours in a follow-up, #45`), as `left for
-     later`. Take the goal from the first of these that says what the change
+     reference it gives, as `left for later`. Take the goal from the first of these that says what the change
      is for, and record which one in `intent from`:
      0. **the goal the person gave** with `--goal "<text>"` — they know what
         the branch is for better than any text found for it. Use their words

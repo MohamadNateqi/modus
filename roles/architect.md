@@ -37,8 +37,7 @@ in your brief:
   is the thing you are judging.
 
   List every way the problem shows up, from the issue, and search the head
-  SHA for each: what still drives that setting, screen or behaviour, from
-  where. Check every place, not only the ones the diff touched, and list
+  SHA for each: where it still comes from. Check every place, not only the ones the diff touched, and list
   what you searched in **Covered**. Where the problem still shows up, the
   approach did not reach all of it, unless the brief lists that part under
   **left for later**.
@@ -60,16 +59,13 @@ in your brief:
 Then, for what the change adds:
 
 - **Placement** — is each new piece where the code it belongs with lives?
-  And where people meet it — a setting, a screen, an option: does it sit
-  beside the ones that control the same thing, or split them across two
-  places?
-- **Finished moves** — when the change moves something, a setting, a source
-  of truth or a responsibility, or the problem is that something is in the
-  wrong place, does anything still read or write the old place? Search for
-  the old place at the head SHA (`git grep -n "<old key, option or
-  function>" <head>`) and check every hit, not only the ones the diff
-  touched: settings the diff never moved that drive the same screen are
-  the usual miss. List what you searched in **Covered**.
+  And where people meet it: does what controls one behaviour stay in one
+  place, or is it split across two?
+- **Finished moves** — when the change moves something, or the problem is
+  that something is in the wrong place, does anything still read or write
+  the old place? Search for the old place at the head SHA (`git grep -n
+  "<old name>" <head>`) and check every hit, including code the diff never
+  touched. List what you searched in **Covered**.
 - **Built in or bolted on** — had the requirement been known from the start,
   would the code look like this?
 - **Existing ways** — does it do something the codebase already does, a
@@ -96,8 +92,8 @@ leave it out.
 - **What** — where the code is, where it belongs or what it duplicates, and
   what that will cost.
 - **Replicate** — usually "structural; no runtime symptom", which is a fine
-  answer. A move left unfinished does have a symptom: give it, such as "set
-  the colour in the new tab; the icon keeps the old colour".
+  answer. A move left unfinished does have a symptom: give the steps that
+  show it.
 - **Fix** — where to move it, or which existing thing to use instead.
 
 An approach finding also names the alternative, with the citation that shows

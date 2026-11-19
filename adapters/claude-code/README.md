@@ -21,7 +21,7 @@ plugin agents, so reviewers would lose their read-only shell.
 /modus-review develop    # against another base
 /modus-review --for agent   # result written for an agent to act on
 /modus-review --issue 123   # judge it against issue 123, not the branch's own
-/modus-review --goal "Move all colour settings to the Appearance tab"
+/modus-review --goal "<what the branch is for>"
 ```
 
 To find the branch's PR and issues, a review needs the GitHub CLI, `gh`,
