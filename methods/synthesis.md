@@ -99,11 +99,27 @@ not take a slot or cost a verification.
    disproves it. A drop is a claim about code, held to the same rule as a
    finding: no citation, no drop.
 
-6. **Rank** by severity, then confidence (`methods/reviewing.md`).
+6. **Rethink first.** An approach finding (`roles/architect.md`) that
+   survived step 5 at `should-fix` or `blocker` changes how the rest reads:
+   if the author takes the alternative, part of this diff goes away, and the
+   findings in it with it. Put it under **Rethink first**, not New. It keeps
+   its ledger id and counts toward the cap. If several qualify, keep the
+   strongest there and the rest in New. A `consider` approach finding stays
+   in New.
 
-7. **Cap** New and Came back together at ten. Count what was dropped.
+   Then, for every other New and Came back finding, ask whether it sits in
+   code the alternative would replace. If it does, mark it `moot if L-03.1
+   is taken`. If the alternative would carry the same problem over — the
+   same entry point, the same missing check — mark it `carries over`
+   instead. Drop and downgrade nothing: the decider may keep the approach,
+   and then every finding stands as it is. You do not decide whether the
+   approach changes.
 
-8. **Merge the Covered lists.** Name what nobody examined, when it matters:
+7. **Rank** by severity, then confidence (`methods/reviewing.md`).
+
+8. **Cap** New and Came back together at ten. Count what was dropped.
+
+9. **Merge the Covered lists.** Name what nobody examined, when it matters:
    "no reviewer looked at the migration path". Check the lists against
    `git diff --name-only <base> <head>`: a changed file that no role read in
    full, where its role applies, is a gap. Name it in the result's first
@@ -111,8 +127,8 @@ not take a slot or cost a verification.
    out, and why, in one line — including one the person left out that triage
    would have run.
 
-9. **Collect lessons** the reviewers reported, deduped. Most rounds have
-   none.
+10. **Collect lessons** the reviewers reported, deduped. Most rounds have
+    none.
 
 ## The result
 
@@ -127,11 +143,17 @@ base <short SHA> · head <short SHA> · reviewers: security, correctness, archit
 intent from: given by the person, or: issue #123 · PR #130, or: the author's own account, no issue, or: inferred from the diff, gh not installed
 <one line on anything not checked, and the enforcement line if instruction-only>
 
+## Rethink first
+<the approach finding in full, with its ledger id; then one line each:>
+If taken, moot: L-03.2, L-03.4 · carries over: L-03.3
+
 ## Needs a decision
 <conflicts, side by side>
 
 ## New
-<findings in full, as methods/reviewing.md defines them; give each its new ledger id>
+<findings in full, as methods/reviewing.md defines them; give each its new ledger id.
+Under a finding's severity line, add `moot if L-03.1 is taken` or `carries over`
+when step 6 marked it>
 
 ## Came back
 <findings in full, with their existing ledger id>
@@ -182,8 +204,19 @@ enforcement: <the enforcement line>
   holds.
 - Work through **To fix** in order. Change only what each finding's `fix`
   names, keep to its `do not change`, and confirm with its `verify`.
-- Nothing under **Needs a decision** is acted on. It waits for a person.
+- Nothing under **Rethink first** or **Needs a decision** is acted on. It
+  waits for a person. A finding marked `moot if` waits with it: fixing code
+  the person may decide to replace is wasted work.
 - Report back by ledger id: fixed, not reproduced, or not fixed and why.
+
+## Rethink first
+### L-03.1 · should-fix · likely · <title>
+- current approach: <what the change does, and where>
+- alternative: <what to do instead, with the `file:line` that shows it exists>
+- cost: <what the current approach costs that the alternative does not, and
+  what switching would cost now>
+- replaces: <the files or functions the alternative would remove or rewrite>
+- if taken, moot: L-03.2, L-03.4 · carries over: L-03.3
 
 ## Needs a decision
 ### <id or ids> · <title>
@@ -203,6 +236,8 @@ enforcement: <the enforcement line>
   condition to check at which `file:line`>
 - found by: <roles, with the models they ran on>
 - came back: <only for a finding that was fixed before and returned>
+- moot if: <L-03.1 is taken; only when step 6 marked it. A finding marked
+  `carries over` has no such line: fix it either way>
 
 ## Still open
 - L-01.4 · should-fix · <title> · `<file:line>`: from an earlier round,

@@ -91,7 +91,9 @@ An approach finding also names the alternative, with the citation that shows
 it exists, and compares the two: what this approach costs that the other
 does not, and what the other would cost to adopt now. If the alternative is
 not clearly better, say so and leave it out. When the change is already
-large, the fix may be to note it for a follow-up rather than redo it.
+large, the fix may be to note it for a follow-up rather than redo it. Name
+the files or functions the alternative would replace, so findings in them
+can be marked as moot if it is taken.
 
 Most findings here are `should-fix` or `consider`. A `blocker` needs a broken
 contract or a layering break that will fail for real users. A bug fix that

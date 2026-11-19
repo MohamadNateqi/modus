@@ -238,7 +238,10 @@ the person has the one-line message from step 10.
 
     With `--roles`, the last line instead names what triage would have
     added: `triage would also have run correctness: behaviour changed`.
-    If a round ran alongside, add one line naming it.
+    If a round ran alongside, add one line naming it. If the result has a
+    **Rethink first**, add one line for it, since it is a decision only the
+    person can make: `Rethink first: <title> (L-03.1); 2 findings are moot if
+    taken`.
 
     No summary, no counts, no findings in the chat; they are all in the file.
     Only when the review could not run at all — no diff, a question that
@@ -252,7 +255,7 @@ the person has the one-line message from step 10.
     Review finished: .modus/reviews/<branch>-<hash>/<NN>/review.md
     Ran: security (opus high), correctness (opus high) → synthesis (opus high)
     architect skipped: no structural change
-    To fix: 1 blocker, 2 should-fix, 0 consider · needs a decision: 1 · still open: 3
+    To fix: 1 blocker, 2 should-fix, 0 consider · rethink first: 1 · moot if taken: 2 · needs a decision: 1 · still open: 3
     Read review.md and follow its "How to use this review".
     ```
 

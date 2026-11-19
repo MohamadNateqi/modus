@@ -501,6 +501,11 @@ It:
    architect recommend opposite fixes, both findings go to the decider side
    by side, each with its reason. Synthesis does not pick a winner;
 4. **verifies** each surviving finding by trying to disprove it;
+   - **puts a better approach first**: a verified approach finding of
+     should-fix or above goes at the top, under **Rethink first**, and every
+     other finding in code that approach would replace is marked as moot if
+     it is taken. Nothing is dropped: whether to change the approach is the
+     decider's call, and the review does not stop for it;
 5. **ranks** by severity × confidence;
 6. **caps** the result (ten by default) and says how many were dropped;
 7. **merges** the Covered lists, so gaps in what was examined are visible;
