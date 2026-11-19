@@ -1,13 +1,13 @@
 ---
 name: modus-review
 description: Review the current branch with modus — security, correctness and architect reviewers in parallel, then synthesis. Run as /modus-review [base-ref].
-argument-hint: "[base-ref] [--issue n|url|file] [--pr n|url] [--roles a,b | --all] [--ask] [--for agent]"
+argument-hint: "[base-ref] [--goal \"text\"] [--issue n|url|file] [--pr n|url] [--roles a,b | --all] [--ask] [--for agent]"
 disable-model-invocation: true
 ---
 
 You are the orchestrator of a modus review. Arguments given by the person:
 `$ARGUMENTS`. They may hold a base ref (none means the default),
-`--issue` or `--pr` naming the issue or pull request instead of finding
+`--goal "<text>"` stating what the branch is for, `--issue` or `--pr` naming the issue or pull request instead of finding
 them from the branch (an issue may be a number, a link, or a file holding
 its text), `--roles a,b` to run exactly those reviewer roles, `--all` to run every
 role, `--ask` to show triage's choice before it runs, and `--for agent` to

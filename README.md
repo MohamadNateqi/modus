@@ -57,14 +57,15 @@ optional; options, team setup and the config are in [adapters/](adapters/).
 
 | Task | Claude Code | Codex |
 |---|---|---|
-| Review the current branch | `/modus-review [base] [--issue n\|url\|file] [--pr n\|url] [--roles a,b \| --all] [--ask] [--for agent]` | `$modus-review` |
+| Review the current branch | `/modus-review [base] [--goal "text"] [--issue n\|url\|file] [--pr n\|url] [--roles a,b \| --all] [--ask] [--for agent]` | `$modus-review` |
 | Draft an architecture map from main | `/modus-map [ref]` | `$modus-map` |
 
 `base` and `ref` default to `origin/main`, then `main`.
 
 ### What a review does
 
-1. **Finds the goal.** It reads the current branch's PR and the issues it
+1. **Finds the goal.** It uses the goal you give with `--goal`, if any.
+   Otherwise it reads the current branch's PR and the issues it
    names, with the GitHub CLI (`gh`). With no issue it uses the PR
    description or the commit messages, and with none of those, or no `gh`,
    it infers the goal from the diff. The review says which it used.
@@ -91,6 +92,7 @@ back, and a line for each finding still open.
 | `--for agent` | write the result for an agent that will act on it, such as one fixing the findings |
 | `--roles a,b` | run only these reviewers; `--all` runs every one |
 | `--ask` | show the reviewers chosen, and wait before running |
+| `--goal "text"` | say what the branch is for; it takes priority over the issue, which is read as background |
 | `--issue`, `--pr` | name the issue or PR, when the branch does not lead to them |
 | `read_pr_and_issues: false` | in `.modus/config.yml`: never read the PR or issues, keeping the AI to the local repository |
 

@@ -49,6 +49,13 @@ the person has the one-line message from step 10.
    - **Write the goal** in one paragraph: the problem, and what counts as
      solved. Take it from the first of these that says what the change is
      for, and record which one in `intent from`:
+     0. **the goal the person gave** with `--goal "<text>"` — they know what
+        the branch is for better than any text found for it. Use their words
+        as the goal, tidied only into a paragraph, and record `intent from:
+        given by the person`. Still read the PR and issues as above, unless
+        the setting is off: they are background, and where they ask for more
+        or other than the person's goal, say so in one line at the top of
+        `review.md` rather than judging against them;
      1. **the issue** — what was asked for. The PR description and commit
         messages are then the author's account of the solution: use them to
         see what the author meant to do, never to restate the goal;
@@ -116,7 +123,7 @@ the person has the one-line message from step 10.
    started: <UTC date and time>
    modus: 0.1.0 · 9b499c6 · modified · adapter 0.1.0
    intent: <the goal paragraph from step 1>
-   intent from: issue #123 <url> · PR #130 <url>, or: the author's account, PR #130, no issue, or: inferred from the diff, gh not installed
+   intent from: given by the person, or: issue #123 <url> · PR #130 <url>, or: the author's account, PR #130, no issue, or: inferred from the diff, gh not installed
    reviewers: security (<model effort>), correctness (<model effort>)
    chosen by: triage, or the person with --roles / --all
    skipped: architect — no structural change

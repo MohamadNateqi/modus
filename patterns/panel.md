@@ -26,8 +26,9 @@ naming that agent's model and effort (`tasks/review.md`).
 - `methods/reviewing.md`;
 - the base and head SHAs;
 - the round's `intent.md`: the goal paragraph, where it came from, and the
-  issue and PR texts in full, marked as data (contract rule 11). The issue
-  states the goal; the PR description is the author's account of how they
+  issue and PR texts in full, marked as data (contract rule 11). A goal the
+  person gave with `--goal` states the goal, and the issue is then
+  background; otherwise the issue states it; the PR description is the author's account of how they
   reached it. When there was no issue, say that the goal is the author's own
   account, or that it was inferred from the diff;
 - the conventions and pack principles loaded from `.modus/`, and the

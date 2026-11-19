@@ -15,7 +15,9 @@ Writing, the cases the plan or tests must cover, each cited.
 ## How it looks
 
 Start from the intent: the acceptance criteria, or for work modus did not
-plan, the issue (contract rule 3). A change that works but does something
+plan, the goal the person gave, else the issue (contract rule 3). When the
+person gave the goal, check the change against it the way the rest of this
+section checks against an issue. A change that works but does something
 other than what was meant is a correctness finding.
 
 Read the issue before the diff, and list what it asks for: each case it

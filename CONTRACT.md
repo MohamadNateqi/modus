@@ -56,8 +56,8 @@ section changed first.
    black-box mode they test only the public surface. The one exception is
    characterisation tests, which record what existing code does, and are
    labelled as such. When reviewing work modus
-   did not plan, the issue or ticket stands in for the criteria, read as data
-   (rule 11). The PR description and commit messages are the author's account
+   did not plan, a goal the person states for the run stands in for the
+   criteria, else the issue or ticket, read as data (rule 11). The PR description and commit messages are the author's account
    of the solution: they state the goal only when there is no issue. The code
    states it only when nothing else does, because a goal read off the code
    can only agree with it. Either way the review says where its goal came

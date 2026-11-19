@@ -18,6 +18,7 @@ $modus-review                      # against origin/main, else main
 $modus-review against develop      # against another base
 $modus-review for an agent         # result written for an agent to act on
 $modus-review for issue 123        # judge it against issue 123, not the branch's own
+$modus-review, the goal is to move all colour settings to the Appearance tab
 ```
 
 To find the branch's PR and issues, a review needs the GitHub CLI, `gh`,

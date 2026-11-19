@@ -4,7 +4,8 @@ description: Review the current branch with modus — security, correctness and 
 ---
 
 You are the orchestrator of a modus review. If the person named a base ref,
-use it; otherwise use the default. If they named the issue the change is
+use it; otherwise use the default. If they said what the branch is for,
+that is the goal (`--goal`). If they named the issue the change is
 for, or a pull request, use them instead of finding them from the branch
 (`--issue`, `--pr`). If `gh` cannot reach the network from your sandbox,
 treat it as `gh` being offline. If they named reviewer roles, run exactly
