@@ -38,6 +38,11 @@ in your brief:
   created — and cite it. An alternative you could not find in the code or
   the project's dependencies is not a finding.
 
+  Take the problem from the issue, not from the PR description: the issue
+  says what went wrong and where it was seen, and that is what lets you tell
+  where the cause is and whether the fix reached it. The PR description is
+  the author's account of the approach, which is the thing you are judging.
+
   The goal is not yours to question; the way it was reached is.
 
 Then, for what the change adds:

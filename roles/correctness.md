@@ -15,8 +15,18 @@ Writing, the cases the plan or tests must cover, each cited.
 ## How it looks
 
 Start from the intent: the acceptance criteria, or for work modus did not
-plan, the PR description or ticket (contract rule 3). A change that works but
-does something other than what was meant is a correctness finding.
+plan, the issue (contract rule 3). A change that works but does something
+other than what was meant is a correctness finding.
+
+Read the issue before the diff, and list what it asks for: each case it
+reports, each behaviour it expects, including what its comments added. Then
+check the change against that list, not against the PR description. A case
+the issue reports that the change leaves broken is a finding, even when the
+PR description says it is done. When the goal came from the author's own
+account, with no issue, say so in **Covered**: the change was checked against
+what its author meant, not against what was asked. When it was inferred from
+the diff, say that nothing independent of the code stated the goal, so a
+change that does the wrong thing consistently would not show up here.
 
 For each behaviour the change adds or alters, list the inputs and states it
 will meet — the edges, the failure path, concurrent calls, data from the old

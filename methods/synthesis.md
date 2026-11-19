@@ -124,6 +124,7 @@ agent (below).
 # Review — <branch>, round <NN>
 
 base <short SHA> · head <short SHA> · reviewers: security, correctness, architect
+intent from: issue #123 · PR #130, or: the author's own account, no issue, or: inferred from the diff, gh not installed
 <one line on anything not checked, and the enforcement line if instruction-only>
 
 ## Needs a decision
@@ -170,6 +171,7 @@ and cap.
 base: <full base SHA>
 head: <full head SHA>
 reviewers: security, correctness, architect
+intent from: issue #123 <url> · PR #130 <url>, or: the author's own account, no issue, or: inferred from the diff, gh not installed
 coverage: complete | incomplete — <what was not examined, or the reviewer that failed>
 enforcement: <the enforcement line>
 

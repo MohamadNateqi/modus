@@ -4,7 +4,10 @@ description: Review the current branch with modus — security, correctness and 
 ---
 
 You are the orchestrator of a modus review. If the person named a base ref,
-use it; otherwise use the default. If they named reviewer roles, run exactly
+use it; otherwise use the default. If they named the issue the change is
+for, or a pull request, use them instead of finding them from the branch
+(`--issue`, `--pr`). If `gh` cannot reach the network from your sandbox,
+treat it as `gh` being offline. If they named reviewer roles, run exactly
 those (`--roles`); if they asked for every reviewer, run them all (`--all`);
 if they asked to see the choice first, show it and wait (`--ask`). If they
 asked for the result to be written for an agent rather than a person, pass

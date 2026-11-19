@@ -20,7 +20,12 @@ plugin agents, so reviewers would lose their read-only shell.
 /modus-review            # against origin/main, else main
 /modus-review develop    # against another base
 /modus-review --for agent   # result written for an agent to act on
+/modus-review --issue 123   # judge it against issue 123, not the branch's own
 ```
+
+To find the branch's PR and issues, a review needs the GitHub CLI, `gh`,
+installed and signed in. Without it, it uses the commit messages, then the
+diff, and says so.
 
 ## What is enforced
 

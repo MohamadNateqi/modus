@@ -56,15 +56,44 @@ optional; options, team setup and the config are in [adapters/](adapters/).
 
 | Task | Claude Code | Codex |
 |---|---|---|
-| Review the current branch | `/modus-review [base] [--roles a,b \| --all] [--ask] [--for agent]` | `$modus-review` |
+| Review the current branch | `/modus-review [base] [--issue n\|url\|file] [--pr n\|url] [--roles a,b \| --all] [--ask] [--for agent]` | `$modus-review` |
 | Draft an architecture map from main | `/modus-map [ref]` | `$modus-map` |
 
-`base` and `ref` default to `origin/main`, then `main`. A review picks its
-reviewers from what the change touches; `--roles security,architect` runs
-just those, `--all` runs every reviewer, `--ask` shows the choice before it
-runs. `--for agent` writes the result for an agent that will act on it,
-such as one that fixes the findings, instead of for a person. Reviews use the
-map when the project has no `ARCHITECTURE.md`.
+`base` and `ref` default to `origin/main`, then `main`.
+
+### What a review does
+
+1. **Finds the goal.** It reads the current branch's PR and the issues it
+   names, with the GitHub CLI (`gh`). With no issue it uses the PR
+   description or the commit messages, and with none of those, or no `gh`,
+   it infers the goal from the diff. The review says which it used.
+2. **Chooses reviewers** from what the change touches: **security** for
+   input, auth, money and secrets; **correctness** for any change in
+   behaviour, checked against the issue; **architect** for new structure,
+   bug fixes and workarounds, judging where the code goes and whether a
+   better approach exists.
+3. **Runs them in parallel**, read-only, each on its own model if the config
+   sets one.
+4. **Synthesises.** A separate agent merges the findings, drops what earlier
+   rounds already decided, tries to disprove the rest, and keeps the top ten.
+5. **Saves the round** in `.modus/reviews/<branch>/<NN>/`: `review.md` is the
+   result, `intent.md` the texts it was judged against. The chat gets only
+   the path and who ran.
+
+Run it again after new commits and it reports only what is new, what came
+back, and a line for each finding still open.
+
+### Options
+
+| | |
+|---|---|
+| `--for agent` | write the result for an agent that will act on it, such as one fixing the findings |
+| `--roles a,b` | run only these reviewers; `--all` runs every one |
+| `--ask` | show the reviewers chosen, and wait before running |
+| `--issue`, `--pr` | name the issue or PR, when the branch does not lead to them |
+| `read_pr_and_issues: false` | in `.modus/config.yml`: never read the PR or issues, keeping the AI to the local repository |
+
+Reviews use the map when the project has no `ARCHITECTURE.md`.
 
 Everything modus keeps in a project — its config, reviews (one folder per
 branch, a round per run) and the map — lives in `.modus/`, which is never

@@ -34,8 +34,11 @@ around it. A bug that needed production data to see tests nothing.
 1. Check out the case's `head` on a branch in a separate worktree, both with
    ordinary names: `git worktree add -b feature/order-export ../shop-review
    <head>`.
-2. Run the review there against the case's `base`, e.g.
-   `/modus-review <base>`.
+2. Run the review there against the case's `base`, with the issue the
+   introducing change was made for, if it had one, saved as a file that
+   names nothing about the case: `/modus-review <base> --issue <file>`.
+   Never give it the issue for the later fix; that is the answer key. With
+   no issue, run `/modus-review <base>` and it falls back on its own.
 3. Repeat **three times**. Model output varies, and one run decides nothing.
 
 **The reviewer must not know it is being tested.** A reviewer that sees

@@ -56,8 +56,14 @@ section changed first.
    black-box mode they test only the public surface. The one exception is
    characterisation tests, which record what existing code does, and are
    labelled as such. When reviewing work modus
-   did not plan, the stated intent (PR description, ticket) stands in for the
-   criteria, read as data (rule 11).
+   did not plan, the issue or ticket stands in for the criteria, read as data
+   (rule 11). The PR description and commit messages are the author's account
+   of the solution: they state the goal only when there is no issue. The code
+   states it only when nothing else does, because a goal read off the code
+   can only agree with it. Either way the review says where its goal came
+   from. A project may turn off reading the PR and issues, to keep the AI to
+   the local repository; the goal then comes from the commit messages or the
+   code.
 4. **Reviewing and fixing are separate steps.** A reviewer reports; it does
    not edit what it reviews. Fixing is a writing step that comes after the
    findings are reported, in the same agent or another.
@@ -568,6 +574,7 @@ know what the earlier rounds found and what the decider decided.
       decisions/           one file per decision (section 8.2)
       01/                  the round number; its date is in round.md
         round.md           repository, base SHA, head SHA, intent, reviewers
+        intent.md          the issue and PR texts the round judged against
         security.md
         correctness.md
         review.md          the synthesised result
@@ -768,6 +775,7 @@ The folder keeps itself out of git (section 8.1).
 .modus/
   .gitignore        contains *, so the whole folder stays out of git
   config.yml        optional: packs turned on, default approval mode (5.9),
+                    whether reviews read the PR and issues (rule 3),
                     models and effort per role (section 7), measure
                     thresholds, overrides of modus defaults
   conventions/      the person's conventions for this project

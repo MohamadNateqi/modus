@@ -50,6 +50,12 @@ git without touching the project's own `.gitignore`.
 # relative to the repository root.
 # modus_path: ../modus
 
+# Optional: whether a review reads the branch's PR and issues, from GitHub
+# with `gh` or from another tracker, to learn what the change is for.
+# Default: true. Set false to keep the AI to the local repository; reviews
+# then take the goal from commit messages, then from the diff.
+# read_pr_and_issues: false
+
 # Packs to turn on, from modus's packs/.
 packs:
   - wordpress
